@@ -283,14 +283,11 @@
       var tl = gsap.timeline({
         scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom bottom", scrub: 0.6 }
       });
-      gsap.utils.toArray(".hero .layer").forEach(function (layer) {
-        var dir = Number(layer.getAttribute("data-dir"));
-        var speed = Number(layer.getAttribute("data-speed"));
-        /* Semua foto sudah tampil sejak awal; saat scroll bergeser menjauh dengan kecepatan berbeda */
-        tl.to(layer, { x: function () { return dir * window.innerWidth * 0.06 * speed; }, y: -40 * speed, ease: "none", duration: 1.4 }, 0);
+      /* Tiap kolom bergeser dengan kecepatan berbeda */
+      gsap.utils.toArray(".hero .tile").forEach(function (tile, i) {
+        tl.to(tile, { y: [-30, -90, -50][i % 3], ease: "none", duration: 1.4 }, 0);
       });
-      tl.to(".layer-main", { scale: 0.94, ease: "none", duration: 1.4 }, 0)
-        .to(".hero-copy", { y: -40, ease: "none", duration: 1.4 }, 0);
+      tl.to(".hero-copy", { y: -40, ease: "none", duration: 1.4 }, 0);
 
       /* Reel: jendela lengkung membesar pelan saat bagian ini masuk layar (tanpa pin, jadi tidak hilang tiba-tiba) */
       gsap.timeline({ scrollTrigger: { trigger: ".reel", start: "top 85%", end: "top 10%", scrub: 0.6 } })

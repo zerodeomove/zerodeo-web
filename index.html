@@ -17,7 +17,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="preload" as="image" type="image/webp" imagesrcset="img/hero/max-fresh-siluet-800.webp 800w, img/hero/max-fresh-siluet-1200.webp 1200w" imagesizes="(min-width: 700px) 420px, 70vw">
+  
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -50,29 +50,33 @@
         </div>
 
         <div class="hero-layers">
-          <figure class="layer layer-a" data-dir="-1" data-speed="1.4">
-            <img class="hero-siluet" src="img/scene/crystal-glow-1-siluet-500.webp" width="500" height="666" alt="">
-            <img class="hero-terang" src="img/scene/crystal-glow-1-500.webp" width="500" height="666" alt="Zerodeo Crystal Glow roll on di meja kerja berlatar pink">
-          </figure>
-          <figure class="layer layer-b" data-dir="-1" data-speed="0.8">
-            <img class="hero-siluet" src="img/scene/daily-active-3-siluet-500.webp" width="500" height="666" alt="">
-            <img class="hero-terang" src="img/scene/daily-active-3-500.webp" width="500" height="666" alt="Zerodeo Daily Active roll on berlatar kuning dengan helm proyek">
-          </figure>
-          <figure class="layer layer-c" data-dir="1" data-speed="1.2">
-            <img class="hero-siluet" src="img/scene/vital-fresh-2-siluet-500.webp" width="500" height="666" alt="">
-            <img class="hero-terang" src="img/scene/vital-fresh-2-500.webp" width="500" height="666" alt="Zerodeo Vital Fresh spray dengan sepatu lari">
-          </figure>
-          <figure class="layer layer-d" data-dir="1" data-speed="0.7">
-            <img class="hero-siluet" src="img/scene/zen-protect-2-siluet-500.webp" width="500" height="666" alt="">
-            <img class="hero-terang" src="img/scene/zen-protect-2-500.webp" width="500" height="666" alt="Zerodeo Zen Protect spray berlatar kuning dengan sarung tinju">
-          </figure>
-
-          <figure class="layer-main">
-            <img class="hero-siluet" src="img/hero/max-fresh-siluet-1200.webp" srcset="img/hero/max-fresh-siluet-800.webp 800w, img/hero/max-fresh-siluet-1200.webp 1200w" sizes="(min-width: 700px) 420px, 70vw" width="1200" height="1599" alt="" fetchpriority="high">
-            <img class="hero-terang" src="img/hero/max-fresh-terang-1200.webp" srcset="img/hero/max-fresh-terang-800.webp 800w, img/hero/max-fresh-terang-1200.webp 1200w" sizes="(min-width: 700px) 420px, 70vw" width="1200" height="1599" alt="Zerodeo Max Fresh roll on, kemasan Extra Cooling, dengan sarung tinju dan tali skipping">
-          </figure>
+          <div class="hero-grid">
+            <figure class="tile">
+              <img class="hero-siluet" src="img/scene/crystal-glow-1-siluet-500.webp" width="500" height="666" alt="">
+              <img class="hero-terang" src="img/scene/crystal-glow-1-500.webp" width="500" height="666" alt="Zerodeo Crystal Glow roll on di meja kerja berlatar pink">
+            </figure>
+            <figure class="tile">
+              <img class="hero-siluet" src="img/scene/bright-aura-1-siluet-500.webp" width="500" height="666" alt="">
+              <img class="hero-terang" src="img/scene/bright-aura-1-500.webp" width="500" height="666" alt="Zerodeo Bright Aura spray di meja kantor">
+            </figure>
+            <figure class="tile">
+              <img class="hero-siluet" src="img/scene/daily-active-3-siluet-500.webp" width="500" height="666" alt="">
+              <img class="hero-terang" src="img/scene/daily-active-3-500.webp" width="500" height="666" alt="Zerodeo Daily Active roll on berlatar kuning dengan helm proyek">
+            </figure>
+            <figure class="tile">
+              <img class="hero-siluet" src="img/scene/max-fresh-3-siluet-500.webp" width="500" height="666" alt="">
+              <img class="hero-terang" src="img/scene/max-fresh-3-500.webp" width="500" height="666" alt="Zerodeo Max Fresh roll on dengan sarung tinju dan tali skipping">
+            </figure>
+            <figure class="tile">
+              <img class="hero-siluet" src="img/scene/vital-fresh-2-siluet-500.webp" width="500" height="666" alt="">
+              <img class="hero-terang" src="img/scene/vital-fresh-2-500.webp" width="500" height="666" alt="Zerodeo Vital Fresh spray dengan sepatu lari">
+            </figure>
+            <figure class="tile">
+              <img class="hero-siluet" src="img/scene/zen-protect-2-siluet-500.webp" width="500" height="666" alt="">
+              <img class="hero-terang" src="img/scene/zen-protect-2-500.webp" width="500" height="666" alt="Zerodeo Zen Protect spray berlatar kuning dengan sarung tinju">
+            </figure>
+          </div>
         </div>
-
       </div>
     </section>
 
