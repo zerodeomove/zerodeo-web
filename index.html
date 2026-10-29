@@ -41,23 +41,30 @@
     <!-- 1. Hero: siluet menyala, lalu foto lain masuk dari samping -->
     <section class="hero" data-bg="#F0EFEB" aria-labelledby="hero-title">
       <div class="hero-stage">
-        <h1 id="hero-title" class="hero-title">Gerak Tanpa Ragu</h1>
+        <div class="hero-copy">
+          <h1 id="hero-title" class="hero-title">Gerak Tanpa Ragu</h1>
+          <p class="hero-line">Deodoran untuk orang yang banyak bergerak.</p>
+          <div class="hero-foot">
+            <a class="btn btn-dark" href="#varian">Lihat varian</a>
+          </div>
+        </div>
 
         <div class="hero-layers">
           <figure class="layer layer-a" data-dir="-1" data-speed="1.4">
-            <img src="img/scene/crystal-glow-1-500.webp" width="500" height="666" alt="Zerodeo Crystal Glow roll on di meja kerja berlatar pink">
+            <img class="hero-siluet" src="img/scene/crystal-glow-1-siluet-500.webp" width="500" height="666" alt="">
+            <img class="hero-terang" src="img/scene/crystal-glow-1-500.webp" width="500" height="666" alt="Zerodeo Crystal Glow roll on di meja kerja berlatar pink">
           </figure>
           <figure class="layer layer-b" data-dir="-1" data-speed="0.8">
-            <img src="img/scene/daily-active-3-500.webp" width="500" height="666" alt="Zerodeo Daily Active roll on berlatar kuning dengan helm proyek">
-          </figure>
-          <figure class="layer layer-e" data-dir="-1" data-speed="1.1">
-            <img src="img/scene/bright-aura-3-500.webp" width="500" height="666" alt="Zerodeo Bright Aura spray di meja kantor yang terang">
+            <img class="hero-siluet" src="img/scene/daily-active-3-siluet-500.webp" width="500" height="666" alt="">
+            <img class="hero-terang" src="img/scene/daily-active-3-500.webp" width="500" height="666" alt="Zerodeo Daily Active roll on berlatar kuning dengan helm proyek">
           </figure>
           <figure class="layer layer-c" data-dir="1" data-speed="1.2">
-            <img src="img/scene/vital-fresh-2-500.webp" width="500" height="666" alt="Zerodeo Vital Fresh spray dengan sepatu lari">
+            <img class="hero-siluet" src="img/scene/vital-fresh-2-siluet-500.webp" width="500" height="666" alt="">
+            <img class="hero-terang" src="img/scene/vital-fresh-2-500.webp" width="500" height="666" alt="Zerodeo Vital Fresh spray dengan sepatu lari">
           </figure>
           <figure class="layer layer-d" data-dir="1" data-speed="0.7">
-            <img src="img/scene/zen-protect-2-500.webp" width="500" height="666" alt="Zerodeo Zen Protect spray berlatar kuning dengan sarung tinju">
+            <img class="hero-siluet" src="img/scene/zen-protect-2-siluet-500.webp" width="500" height="666" alt="">
+            <img class="hero-terang" src="img/scene/zen-protect-2-500.webp" width="500" height="666" alt="Zerodeo Zen Protect spray berlatar kuning dengan sarung tinju">
           </figure>
 
           <figure class="layer-main">
@@ -66,10 +73,6 @@
           </figure>
         </div>
 
-        <div class="hero-foot">
-          <p class="hero-line">Deodoran untuk orang yang banyak bergerak.</p>
-          <a class="btn btn-dark" href="#varian">Lihat varian</a>
-        </div>
       </div>
     </section>
 
@@ -99,18 +102,18 @@
       </div>
     </section>
 
-    <!-- 3a. Reel: jendela lengkung yang membesar jadi video penuh -->
+    <!-- 3a. Reel: kiri teks, kanan video dalam jendela lengkung -->
     <section class="reel" id="momen" data-bg="#111111" aria-labelledby="reel-title">
       <div class="reel-stage">
-        <div class="reel-window">
-          <video class="reel-video" data-autoplay muted loop playsinline preload="none" poster="img/video/reel-poster.webp" aria-label="Cuplikan orang bergerak: kantor, gudang, dan ring tinju">
-            <source src="img/video/reel.mp4" type="video/mp4">
-          </video>
-        </div>
         <div class="reel-text">
           <p class="eyebrow">Tiga momen gerak</p>
           <h2 id="reel-title" class="h2">Satu lini, banyak momen gerak.</h2>
           <p class="reel-sub">Kantor, lapangan, atau olahraga? Ada Zerodeo-nya.</p>
+        </div>
+        <div class="reel-window">
+          <video class="reel-video" data-autoplay muted loop playsinline preload="none" poster="img/video/reel-poster.webp" aria-label="Cuplikan orang bergerak: kantor, gudang, dan ring tinju">
+            <source src="img/video/reel.mp4" type="video/mp4">
+          </video>
         </div>
       </div>
     </section>
