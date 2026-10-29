@@ -1,3 +1,6 @@
 *.zip
+*.crdownload
 node_modules/
 .wrangler/
+# Foto asli tetap di folder, tidak ikut repo. Situs memakai versi WebP di img/.
+assets/

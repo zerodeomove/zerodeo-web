@@ -1,7 +1,28 @@
 # zerodeo-web
 
-Website Zerodeo, versi awal (private).
+Website Zerodeo, versi awal untuk dilihat tim.
 
-- `PROMPT.md`: prompt untuk sesi Claude Code yang membangun situsnya.
-- `KONTEN.md`: semua teks dan aturan klaim, diambil dari "Zerodeo Product Knowledge".
-- `assets/`: foto produk, foto momen, foto cadangan, dan logo dari deck yang sama.
+- `index.html`, `css/style.css`, `js/main.js`: situsnya. HTML, CSS, dan JS polos, tanpa build step. Animasi scroll pakai GSAP 3.12.5 + ScrollTrigger dari cdnjs.
+- `img/`: foto WebP yang dipakai situs (dikompres dari `assets/`) dan logo SVG dari design system Zerodeo.
+- `PROMPT.md`: prompt yang dipakai untuk membangun situs ini.
+- `KONTEN.md`: semua teks dan aturan klaim, diambil dari "Zerodeo Product Knowledge". Teks varian di `js/main.js` disalin dari sini.
+- `assets/`: foto asli produk, momen, cadangan, dan logo. Tidak ikut terbit.
+- `screenshots/`: tangkapan layar laptop (1440px) dan HP (390px) tiap bagian, plus versi gerak-dikurangi.
+
+## Jalankan di lokal
+
+```bash
+python -m http.server 5173
+```
+
+Lalu buka http://localhost:5173.
+
+## Terbitkan
+
+Cloudflare Workers static assets, sama seperti app lain. `wrangler.jsonc` sudah ada; file yang tidak ikut terbit diatur di `.assetsignore`.
+
+```bash
+npx wrangler deploy
+```
+
+Tautan "Beli di Shopee" dan "Beli di TikTok Shop" masih `#`, nanti diisi.
