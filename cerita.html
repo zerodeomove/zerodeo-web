@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Zerodeo · Pilih Gerakmu</title>
+  <!-- Prototipe scrollytelling. Belum untuk publik: jangan diindeks, tidak ditautkan dari index.html. -->
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="Zerodeo, deodoran untuk orang yang banyak bergerak. Pilih variannya, ikuti ceritanya.">
+  <meta name="theme-color" content="#F0EFEB">
+  <link rel="icon" href="img/logo/zerodeo.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/cerita.css">
+</head>
+<body>
+  <a class="skip" href="#hook">Langsung ke cerita</a>
+
+  <header class="site-header">
+    <a class="brand" href="#pilih" aria-label="Zerodeo, ke pilihan varian">
+      <img src="img/logo/zerodeo.svg" alt="Zerodeo" width="112" height="25">
+    </a>
+    <div class="ganti">
+      <button class="ganti-btn" type="button" aria-expanded="false" aria-controls="ganti-menu">
+        <span class="ganti-dot" aria-hidden="true"></span>
+        <span data-isi="nama">Max Fresh</span>
+        <span class="ganti-panah" aria-hidden="true">▾</span>
+      </button>
+      <div class="ganti-menu" id="ganti-menu" hidden></div>
+    </div>
+    <a class="btn btn-dark btn-sm" href="#beli">Beli</a>
+  </header>
+
+  <!-- Botol yang ikut turun. Digerakkan js/cerita.js; disembunyikan saat gerak dikurangi. -->
+  <div class="panggung" aria-hidden="true">
+    <div class="botol-gerak">
+      <span class="bayang"></span>
+      <img class="botol-img is-on" alt="" width="433" height="1000">
+      <img class="botol-img" alt="" width="433" height="1000">
+    </div>
+  </div>
+
+  <main>
+    <!-- 1. Pilih varian -->
+    <section class="pilih" id="pilih" aria-labelledby="pilih-title">
+      <div class="pilih-stage">
+        <div class="pilih-copy">
+          <h1 id="pilih-title" class="pilih-title">Gerak Tanpa Ragu</h1>
+          <p class="pilih-line">Pilih Zerodeo-mu, lalu scroll. Botolnya ikut cerita.</p>
+          <div class="chips" role="group" aria-label="Sorot varian per momen">
+            <button class="chip" type="button" data-momen="kantor" aria-pressed="false">Kantor</button>
+            <button class="chip" type="button" data-momen="lapangan" aria-pressed="false">Lapangan</button>
+            <button class="chip" type="button" data-momen="olahraga" aria-pressed="false">Olahraga</button>
+          </div>
+        </div>
+        <div class="pilih-grid" id="pilih-grid" role="radiogroup" aria-label="Pilih varian"></div>
+      </div>
+    </section>
+
+    <!-- 2. Hook dan momen -->
+    <section class="bab bab-hook" id="hook" aria-labelledby="hook-title">
+      <div class="bab-inner">
+        <div class="jendela">
+          <video class="jendela-video" data-autoplay muted loop playsinline preload="none"></video>
+        </div>
+        <div class="isi isi-kiri">
+          <p class="eyebrow" data-isi="momenLabel"></p>
+          <h2 id="hook-title" class="h2 hook-text" data-isi="hookKutip"></h2>
+          <p class="lead"><b data-isi="nama"></b> · <span data-isi="kemasan"></span> · <span data-isi="format"></span></p>
+          <img class="botol-inline" data-botol="tutup" alt="">
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Formula -->
+    <section class="bab bab-formula" id="formula" aria-labelledby="formula-title">
+      <div class="bab-inner">
+        <div class="isi isi-tengah">
+          <p class="eyebrow">Formula</p>
+          <h2 id="formula-title" class="h2">Di dalam <span data-isi="nama"></span>.</h2>
+        </div>
+        <img class="botol-inline" data-botol="tutup" alt="">
+        <ul class="bahan">
+          <li class="bahan-1"><b>Dual Active Shield</b><span>2 bahan antiperspirant: aluminium sesquichlorohydrate dan zinc phenolsulfonate.</span></li>
+          <li class="bahan-2"><b>Alpha arbutin</b><span>Bantu mencerahkan ketiak gelap dengan pemakaian rutin.</span></li>
+          <li class="bahan-3"><img src="img/logo/ikon-dingin.png" width="40" height="40" alt=""><b>Menthol</b><span>Sensasi dingin saat dipakai, segar di awal aktivitas.</span></li>
+          <li class="bahan-4" data-hanya="antibakteri"><b>Zat antibakteri</b><span>Ada di Vital Fresh dan Zen Protect.</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 4. Manfaat -->
+    <section class="bab bab-manfaat" id="manfaat" aria-labelledby="manfaat-title">
+      <div class="bab-inner">
+        <div class="isi isi-kanan">
+          <p class="eyebrow">Manfaat</p>
+          <h2 id="manfaat-title" class="h2 h2-sedang" data-isi="manfaat"></h2>
+          <ul class="badges" id="badges"></ul>
+          <p class="untuk"><span>Untuk</span> <span data-isi="untuk"></span></p>
+          <img class="botol-inline" data-botol="tutup" alt="">
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Wangi -->
+    <section class="bab bab-wangi" id="wangi" aria-labelledby="wangi-title">
+      <div class="bab-inner">
+        <span class="kabut kabut-1" aria-hidden="true"></span>
+        <span class="kabut kabut-2" aria-hidden="true"></span>
+        <span class="kabut kabut-3" aria-hidden="true"></span>
+        <div class="isi isi-kiri">
+          <p class="eyebrow">Wangi</p>
+          <h2 id="wangi-title" class="h2" data-isi="aromaUtama"></h2>
+          <p class="lead" data-isi="wangi"></p>
+          <div class="qa">
+            <p class="qa-q">“Wanginya kok tipis?”</p>
+            <p class="qa-a">“Sengaja. Deodoran tugasnya jaga bau, bukan jadi parfum. Jadi aman dipadukan dengan parfum favoritmu.”</p>
+          </div>
+          <img class="botol-inline" data-botol="tutup" alt="">
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Cara pakai: tutup terbuka -->
+    <section class="bab bab-pakai" id="pakai" aria-labelledby="pakai-title">
+      <div class="bab-inner">
+        <div class="isi isi-kanan">
+          <p class="eyebrow">Cara pakai · <span data-isi="formatPendek"></span></p>
+          <h2 id="pakai-title" class="h2" data-isi="pakaiJudul"></h2>
+          <ol class="langkah" id="langkah"></ol>
+          <p class="note">Untuk hasil cerah: pakai rutin setiap hari. Hasilnya bertahap dan berbeda tiap orang.</p>
+          <img class="botol-inline" data-botol="buka" alt="">
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Cocok untuk -->
+    <section class="bab bab-cocok" id="cocok" aria-labelledby="cocok-title">
+      <div class="bab-inner">
+        <div class="isi isi-kanan">
+          <p class="eyebrow">Cocok buat</p>
+          <h2 id="cocok-title" class="h2 h2-sedang" data-isi="cocokJudul"></h2>
+          <ul class="persona" id="persona"></ul>
+          <p class="lain-judul">Mau lihat yang lain?</p>
+          <div class="lain" id="lain" role="group" aria-label="Ganti varian"></div>
+          <img class="botol-inline" data-botol="tutup" alt="">
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. FAQ -->
+    <section class="faq section" id="faq" aria-labelledby="faq-title">
+      <div class="wrap wrap-narrow">
+        <p class="eyebrow">FAQ</p>
+        <h2 id="faq-title" class="h2">Yang sering ditanya.</h2>
+        <div class="faq-list">
+          <details>
+            <summary>Bedanya roll on dan spray?</summary>
+            <p>Sama-sama 2 bahan antiperspirant. Roll on untuk olesan tepat, spray terasa dingin dan cepat.</p>
+          </details>
+          <details>
+            <summary>Bisa dipakai pria?</summary>
+            <p>Daily Active, Vital Fresh, Zen Protect untuk pria dan wanita. Crystal Glow dan Bright Aura khusus wanita.</p>
+          </details>
+          <details>
+            <summary>Kapan ketiak terlihat cerah?</summary>
+            <p>Bertahap dengan pemakaian rutin, beda tiap orang.</p>
+          </details>
+          <details>
+            <summary>Bikin noda kuning di baju?</summary>
+            <p>Roll on tidak meninggalkan noda di pakaian. Tetap tunggu kering sebelum berpakaian.</p>
+          </details>
+          <details>
+            <summary>Boleh setelah cukur?</summary>
+            <p>Hindari kulit luka atau iritasi. Kalau perih atau merah, hentikan pemakaian.</p>
+          </details>
+          <details>
+            <summary>Aman untuk ibu hamil?</summary>
+            <p>Belum ada data khusus. Sarankan konsultasi dengan dokter.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. Penutup -->
+    <section class="penutup" id="beli" aria-labelledby="penutup-title">
+      <div class="wrap penutup-inner">
+        <h2 id="penutup-title" class="penutup-title">Gerak Tanpa Ragu</h2>
+        <p class="penutup-line"><span data-isi="nama"></span>, <span data-isi="formatPendekKecil"></span>. Siap ikut gerakmu.</p>
+        <div class="penutup-cta">
+          <a class="btn btn-light" href="#">Beli <span data-isi="nama"></span> di Shopee</a>
+          <a class="btn btn-ghost" href="#">Beli di TikTok Shop</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-row">
+      <img src="img/logo/zerodeo.svg" alt="Zerodeo" width="140" height="31" loading="lazy">
+      <p>Deodoran untuk orang yang banyak bergerak.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script src="js/cerita.js" defer></script>
+</body>
+</html>
