@@ -5,7 +5,7 @@
   var VARIAN = [
     {
       id: "crystal-glow", nama: "Crystal Glow", kemasan: "Glow & Shield", tipe: "rollon",
-      format: "Roll on 40 ml · for Women", foto: "crystal-glow-rollon", tint: "#F5D3E2",
+      format: "Roll on 40 ml · for Women", tint: "#F5D3E2",
       aroma: "Amethyst, feminin, segar",
       untuk: "Kerja kantor. Wanita kantoran dan fashion.",
       hook: "Ketiak cerah, tetap kering hingga 48 jam.",
@@ -15,7 +15,7 @@
     },
     {
       id: "bright-aura", nama: "Bright Aura", kemasan: "Bright & Confidence", tipe: "spray",
-      format: "Spray 60 ml · for Women", foto: "bright-aura-spray", tint: "#EFCFE1",
+      format: "Spray 60 ml · for Women", tint: "#EFCFE1",
       aroma: "Floral feminin, segar",
       untuk: "Kerja kantor. Wanita kantoran, fashion, ibu rumah tangga muda.",
       hook: "Dingin, wangi feminin, dan alpha arbutin untuk ketiak cerah.",
@@ -25,7 +25,7 @@
     },
     {
       id: "daily-active", nama: "Daily Active", kemasan: "Extra Shield", tipe: "rollon",
-      format: "Roll on 40 ml", foto: "daily-active-rollon", tint: "#F6E8A4",
+      format: "Roll on 40 ml", tint: "#F6E8A4",
       aroma: "Bunga moringa, floral",
       untuk: "Kerja lapangan. Sales, marketing, driver. Pria dan wanita.",
       hook: "Dual Active Shield, perlindungan hingga 48 jam di lapangan.",
@@ -35,7 +35,7 @@
     },
     {
       id: "max-fresh", nama: "Max Fresh", kemasan: "Extra Cooling", tipe: "rollon",
-      format: "Roll on 40 ml", foto: "max-fresh-rollon", tint: "#D5E6F0",
+      format: "Roll on 40 ml", tint: "#D5E6F0",
       aroma: "Mint",
       untuk: "Olahraga: gym, lari, boxing, hiking. Juga pekerja lapangan.",
       hook: "Dinginnya kerasa dari olesan pertama.",
@@ -45,7 +45,7 @@
     },
     {
       id: "vital-fresh", nama: "Vital Fresh", kemasan: "Max Fresh & Brightening", tipe: "spray",
-      format: "Spray 60 ml", foto: "vital-fresh-spray", tint: "#CFE2F2",
+      format: "Spray 60 ml", tint: "#CFE2F2",
       aroma: "Hideout, unisex",
       untuk: "Olahraga: lari, tenis, basket. Pria dan wanita.",
       hook: "Segar habis lari, ketiak tetap terawat.",
@@ -55,7 +55,7 @@
     },
     {
       id: "zen-protect", nama: "Zen Protect", kemasan: "Bright Confidence", tipe: "spray",
-      format: "Spray 60 ml", foto: "zen-protect-spray", tint: "#F1EBC4",
+      format: "Spray 60 ml", tint: "#F1EBC4",
       aroma: "Parfum “lavish”, unisex",
       untuk: "Olahraga berat, indoor dan outdoor. Pria dan wanita.",
       hook: "Untuk yang geraknya nggak setengah-setengah.",
@@ -88,7 +88,8 @@
     (children || []).forEach(function (c) { if (c) n.appendChild(c); });
     return n;
   }
-  function foto(v, w) { return "img/produk/" + v.foto + "-" + (w || 600) + ".webp"; }
+  /* Foto katalog: 1 dan 2 tutup terpasang, 3 tutup terbuka */
+  function foto(v, w, n) { return "img/katalog/" + v.id + "-" + (n || 1) + "-" + (w || 700) + ".webp"; }
   function alt(v) { return "Zerodeo " + v.nama + " " + v.format.split(" · ")[0].toLowerCase() + ", kemasan " + v.kemasan; }
 
   /* ---------- Kartu varian ---------- */
@@ -96,7 +97,7 @@
   VARIAN.forEach(function (v) {
     var card = el("button", { "class": "v-card", type: "button", "data-tipe": v.tipe, "data-id": v.id, style: "--tint:" + v.tint, "aria-haspopup": "dialog" }, [
       el("div", { "class": "v-photo" }, [
-        el("img", { src: foto(v), width: "600", height: "834", alt: alt(v), loading: "lazy" })
+        el("img", { src: foto(v), width: "700", height: "933", alt: alt(v), loading: "lazy" })
       ]),
       el("div", { "class": "v-body" }, [
         el("span", { "class": "v-format", text: v.format }),
@@ -133,8 +134,21 @@
     lastFocus = document.activeElement;
     dialog.style.setProperty("--tint", v.tint);
     var img = document.getElementById("detail-img");
-    img.src = foto(v);
-    img.alt = alt(v);
+    var thumbs = document.getElementById("detail-thumbs");
+    function show(n) {
+      img.src = foto(v, 1200, n);
+      img.alt = alt(v) + (n === 3 ? ", tutup terbuka" : "");
+      thumbs.querySelectorAll("button").forEach(function (b, i) { b.setAttribute("aria-pressed", String(i + 1 === n)); });
+    }
+    thumbs.textContent = "";
+    [1, 2, 3].forEach(function (n) {
+      var b = el("button", { type: "button", "aria-pressed": "false", "aria-label": "Foto " + n + " dari 3" }, [
+        el("img", { src: foto(v, 700, n), alt: "", width: "64", height: "64" })
+      ]);
+      b.addEventListener("click", function () { show(n); });
+      thumbs.appendChild(b);
+    });
+    show(1);
     document.getElementById("detail-format").textContent = v.format;
     document.getElementById("detail-title").textContent = v.nama;
     document.getElementById("detail-kemasan").textContent = v.kemasan;
@@ -175,7 +189,7 @@
       var v = byId[id];
       ul.appendChild(el("li", null, [
         el("button", { "class": "mini", type: "button", "data-id": v.id, "aria-haspopup": "dialog" }, [
-          el("img", { src: foto(v), alt: alt(v), width: "40", height: "40", loading: "lazy" }),
+          el("img", { src: foto(v, 200), alt: alt(v), width: "40", height: "40", loading: "lazy" }),
           el("span", null, [el("b", { text: v.nama }), el("small", { text: v.format.split(" · ")[0] })])
         ])
       ]));
@@ -191,7 +205,7 @@
     PERSONA[i].varian.forEach(function (id) {
       var v = byId[id];
       result.appendChild(el("button", { "class": "c-card", type: "button", "data-id": v.id, style: "--tint:" + v.tint, "aria-haspopup": "dialog" }, [
-        el("img", { src: foto(v), alt: alt(v), width: "600", height: "834", loading: "lazy" }),
+        el("img", { src: foto(v), alt: alt(v), width: "700", height: "933", loading: "lazy" }),
         el("span", null, [el("b", { text: v.nama }), el("small", { text: v.format })])
       ]));
     });
@@ -202,6 +216,34 @@
     pChips.appendChild(b);
   });
   showPersona(0);
+
+  /* ---------- Video ---------- */
+  /* Video hanya diputar saat terlihat. Gerak dikurangi: tidak diputar otomatis, pengunjung bisa memutar sendiri. */
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var videos = Array.prototype.slice.call(document.querySelectorAll("video[data-autoplay]"));
+  var pinnedVideos = null; /* diisi saat momen dikunci: hanya video panel aktif yang jalan */
+
+  function play(v) { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
+  if (reduceMotion) {
+    videos.forEach(function (v) { if (!v.hasAttribute("aria-hidden")) v.controls = true; });
+  } else if ("IntersectionObserver" in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        var v = en.target;
+        if (pinnedVideos && pinnedVideos.indexOf(v) !== -1) return;
+        if (en.isIntersecting) play(v); else v.pause();
+      });
+    }, { threshold: 0.2 });
+    videos.forEach(function (v) { io.observe(v); });
+  }
+
+  /* ---------- Lampu menyala di hero ---------- */
+  var root = document.documentElement;
+  if (root.classList.contains("lights-off")) {
+    var siluet = document.querySelector(".hero-siluet");
+    var lightsOn = function () { setTimeout(function () { root.classList.remove("lights-off"); }, 900); };
+    if (siluet.complete) lightsOn(); else siluet.addEventListener("load", lightsOn);
+  }
 
   /* ---------- Gerak (GSAP) ---------- */
   function initMotion() {
@@ -245,6 +287,17 @@
       tl.to(".layer-main", { scale: 0.9, ease: "none", duration: 1.4 }, 0)
         .to(".hero-title", { yPercent: -18, ease: "none", duration: 1.4 }, 0);
 
+      /* Reel: jendela lengkung membesar jadi video penuh layar */
+      var wide = window.matchMedia("(min-width: 700px)").matches;
+      var reel = gsap.timeline({
+        scrollTrigger: { trigger: ".reel-stage", start: "top top", end: "+=130%", pin: true, scrub: 0.6, refreshPriority: 2 }
+      });
+      reel.fromTo(".reel-window",
+        { clipPath: wide ? "inset(12% 37% 8% 37% round 400px 400px 28px 28px)" : "inset(14% 16% 10% 16% round 300px 300px 24px 24px)" },
+        { clipPath: "inset(0% 0% 0% 0% round 0px 0px 0px 0px)", ease: "power2.inOut", duration: 1 }, 0)
+        .fromTo(".reel-video", { scale: 1.25 }, { scale: 1, ease: "power2.inOut", duration: 1 }, 0)
+        .fromTo(".reel-text > *", { y: 40, autoAlpha: 0 }, { y: 0, autoAlpha: 1, stagger: 0.08, duration: 0.35, ease: "power2.out" }, 0.6);
+
       /* Formula: kartu muncul bergantian */
       gsap.from(".f-card", {
         y: 60, opacity: 0, duration: 0.9, ease: "power3.out", stagger: 0.18,
@@ -252,7 +305,7 @@
       });
 
       /* Judul bagian naik pelan */
-      gsap.utils.toArray(".section .h2, .momen-head .h2").forEach(function (h) {
+      gsap.utils.toArray(".section .h2").forEach(function (h) {
         gsap.from(h, { y: 40, opacity: 0, duration: 0.9, ease: "power3.out", scrollTrigger: { trigger: h, start: "top 85%" } });
       });
 
@@ -275,10 +328,13 @@
       gsap.set(panels[0], { autoAlpha: 1 });
 
       var current = -1;
+      var vids = panels.map(function (p) { return p.querySelector("video"); });
+      pinnedVideos = vids;
       function activate(i) {
         if (i === current) return;
         current = i;
         setBg(panels[i].getAttribute("data-bg"));
+        vids.forEach(function (v, j) { if (j === i) play(v); else v.pause(); });
       }
 
       var tl = gsap.timeline({
@@ -292,7 +348,8 @@
           },
           onEnter: function () { activate(0); },
           onEnterBack: function () { current = -1; },
-          onLeaveBack: function () { current = -1; setBg("#F0EFEB"); }
+          onLeave: function () { vids.forEach(function (v) { v.pause(); }); },
+          onLeaveBack: function () { current = -1; vids.forEach(function (v) { v.pause(); }); setBg("#111111"); }
         }
       });
       tl.to(".momen-progress span", { scaleX: 1, ease: "none", duration: panels.length }, 0);
@@ -301,11 +358,12 @@
         var prev = panels[i - 1];
         var at = i - 0.35;
         tl.to(prev, { autoAlpha: 0, y: -40, duration: 0.35 }, at)
-          .fromTo(p.querySelector(".momen-photo"), { xPercent: 12 }, { xPercent: 0, duration: 0.5 }, at)
+          .fromTo(p.querySelector(".momen-media"), { xPercent: 12 }, { xPercent: 0, duration: 0.5 }, at)
           .fromTo(p, { autoAlpha: 0, y: 40 }, { autoAlpha: 1, y: 0, duration: 0.35 }, at + 0.1);
       });
 
       return function () {
+        pinnedVideos = null;
         stage.classList.remove("is-pinned");
         gsap.set(panels, { clearProps: "all" });
       };

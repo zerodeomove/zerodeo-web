@@ -3,7 +3,12 @@
 Website Zerodeo, versi awal untuk dilihat tim.
 
 - `index.html`, `css/style.css`, `js/main.js`: situsnya. HTML, CSS, dan JS polos, tanpa build step. Animasi scroll pakai GSAP 3.12.5 + ScrollTrigger dari cdnjs.
-- `img/`: foto WebP yang dipakai situs (dikompres dari `assets/`) dan logo SVG dari design system Zerodeo.
+- `img/`: semua media yang dipakai situs, dikompres dari `assets/`:
+  - `hero/`: siluet dan foto terang Max Fresh untuk efek lampu menyala.
+  - `katalog/`: foto katalog per varian (1–2 tutup terpasang, 3 tutup terbuka), untuk kartu, detail, dan cara pakai.
+  - `scene/`: foto Hero Revisi, untuk lapisan parallax di hero.
+  - `video/`: potongan video tanpa suara dan tanpa teks tertanam (reel dari Teaser 2, kantor, lapangan, olahraga) plus posternya.
+  - `logo/`: logo SVG dari design system Zerodeo dan ikon dingin.
 - `PROMPT.md`: prompt yang dipakai untuk membangun situs ini.
 - `KONTEN.md`: semua teks dan aturan klaim, diambil dari "Zerodeo Product Knowledge". Teks varian di `js/main.js` disalin dari sini.
 - `assets/`: foto asli produk, momen, cadangan, dan logo. Tidak ikut terbit.
