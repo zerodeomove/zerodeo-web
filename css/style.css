@@ -108,22 +108,19 @@ button { font: inherit; color: inherit; }
 }
 .hero-line { margin-top: clamp(18px, 2.4vw, 28px); font-size: clamp(17px, 1.7vw, 22px); font-weight: 500; max-width: 24ch; }
 .hero-foot { margin-top: clamp(24px, 3vw, 36px); }
-.hero-layers { position: relative; height: 100%; max-height: 760px; container-type: size; }
-.layer-main {
-  position: absolute; z-index: 3; left: 50%; top: 50%; translate: -50% -50%;
-  width: min(66cqw, 88cqh * .75); aspect-ratio: 3 / 4;
+.hero-layers { position: relative; height: 100%; max-height: 720px; container-type: size; }
+/* Enam varian sama besar, 3 x 2. Ukuran grid mengikuti kotaknya (container query). */
+.hero-grid {
+  position: absolute; left: 50%; top: 50%; translate: -50% -50%;
+  width: min(100cqw, 100cqh * 9 / 8); display: grid; grid-template-columns: repeat(3, 1fr); gap: 3%;
 }
-.layer-main img, .layer img {
-  width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius);
-  box-shadow: 0 30px 60px -30px rgba(17, 17, 17, .4);
+.tile { position: relative; aspect-ratio: 3 / 4; }
+.tile:nth-child(odd) { rotate: -2deg; }
+.tile:nth-child(even) { rotate: 2deg; translate: 0 8%; }
+.tile img {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-sm);
+  box-shadow: 0 24px 48px -28px rgba(17, 17, 17, .45);
 }
-.layer-main img, .layer img { position: absolute; inset: 0; }
-/* Foto varian lain mengintip dari balik produk utama */
-.layer { position: absolute; z-index: 2; aspect-ratio: 3 / 4; width: min(34cqw, 36cqh * .75); }
-.layer-a { left: 0;  top: 6%;     rotate: -8deg; }
-.layer-b { left: 4%; bottom: 4%;  rotate: 5deg; }
-.layer-c { right: 0; top: 2%;     rotate: 7deg; }
-.layer-d { right: 3%; bottom: 6%; rotate: -5deg; }
 
 /* Lampu mati: hero gelap, produk tinggal siluet. Kelas dilepas JS sehingga lampu menyala. */
 .hero { transition: background-color 1.6s ease; }
@@ -144,8 +141,6 @@ button { font: inherit; color: inherit; }
   .hero-title { font-size: clamp(40px, 12vw, 60px); max-width: none; }
   .hero-line { margin: 12px auto 0; font-size: 16px; }
   .hero-foot { margin-top: 18px; }
-  .layer-main { width: min(62cqw, 92cqh * .75); }
-  .layer { width: min(36cqw, 40cqh * .75); }
 }
 
 /* 2. Formula */
