@@ -240,9 +240,16 @@
   /* ---------- Lampu menyala di hero ---------- */
   var root = document.documentElement;
   if (root.classList.contains("lights-off")) {
-    var siluet = document.querySelector(".hero-siluet");
-    var lightsOn = function () { setTimeout(function () { root.classList.remove("lights-off"); }, 900); };
-    if (siluet.complete) lightsOn(); else siluet.addEventListener("load", lightsOn);
+    /* Tunggu semua foto hero (siluet dan terang) siap, supaya semuanya menyala bersamaan */
+    var heroImgs = Array.prototype.slice.call(document.querySelectorAll(".hero img"));
+    var pending = heroImgs.filter(function (im) { return !im.complete; }).length;
+    var lightsOn = function () { setTimeout(function () { root.classList.remove("lights-off"); }, 700); };
+    if (!pending) lightsOn();
+    else heroImgs.forEach(function (im) {
+      if (im.complete) return;
+      var done = function () { if (--pending === 0) lightsOn(); };
+      im.addEventListener("load", done); im.addEventListener("error", done);
+    });
   }
 
   /* ---------- Gerak (GSAP) ---------- */
@@ -272,31 +279,24 @@
 
     /* Semua ukuran, gerak normal */
     mm.add("(prefers-reduced-motion: no-preference)", function () {
-      /* Hero: layered parallax, tiap foto masuk dari samping dengan kecepatan berbeda */
+      /* Hero: layered parallax, tiap foto bergerak dengan kecepatan berbeda */
       var tl = gsap.timeline({
         scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom bottom", scrub: 0.6 }
       });
       gsap.utils.toArray(".hero .layer").forEach(function (layer) {
         var dir = Number(layer.getAttribute("data-dir"));
         var speed = Number(layer.getAttribute("data-speed"));
-        tl.fromTo(layer,
-          { x: function () { return dir * window.innerWidth * 0.55; }, opacity: 0 },
-          { x: 0, opacity: 1, ease: "power2.out", duration: 1 / speed },
-          0);
+        /* Semua foto sudah tampil sejak awal; saat scroll bergeser menjauh dengan kecepatan berbeda */
+        tl.to(layer, { x: function () { return dir * window.innerWidth * 0.06 * speed; }, y: -40 * speed, ease: "none", duration: 1.4 }, 0);
       });
-      tl.to(".layer-main", { scale: 0.9, ease: "none", duration: 1.4 }, 0)
-        .to(".hero-title", { yPercent: -18, ease: "none", duration: 1.4 }, 0);
+      tl.to(".layer-main", { scale: 0.94, ease: "none", duration: 1.4 }, 0)
+        .to(".hero-copy", { y: -40, ease: "none", duration: 1.4 }, 0);
 
-      /* Reel: jendela lengkung membesar jadi video penuh layar */
-      var wide = window.matchMedia("(min-width: 700px)").matches;
-      var reel = gsap.timeline({
-        scrollTrigger: { trigger: ".reel-stage", start: "top top", end: "+=130%", pin: true, scrub: 0.6, refreshPriority: 2 }
-      });
-      reel.fromTo(".reel-window",
-        { clipPath: wide ? "inset(12% 37% 8% 37% round 400px 400px 28px 28px)" : "inset(14% 16% 10% 16% round 300px 300px 24px 24px)" },
-        { clipPath: "inset(0% 0% 0% 0% round 0px 0px 0px 0px)", ease: "power2.inOut", duration: 1 }, 0)
-        .fromTo(".reel-video", { scale: 1.25 }, { scale: 1, ease: "power2.inOut", duration: 1 }, 0)
-        .fromTo(".reel-text > *", { y: 40, autoAlpha: 0 }, { y: 0, autoAlpha: 1, stagger: 0.08, duration: 0.35, ease: "power2.out" }, 0.6);
+      /* Reel: jendela lengkung membesar pelan saat bagian ini masuk layar (tanpa pin, jadi tidak hilang tiba-tiba) */
+      gsap.timeline({ scrollTrigger: { trigger: ".reel", start: "top 85%", end: "top 10%", scrub: 0.6 } })
+        .fromTo(".reel-window", { scale: 0.72, yPercent: 8 }, { scale: 1, yPercent: 0, ease: "none" }, 0)
+        .fromTo(".reel-video", { scale: 1.25 }, { scale: 1, ease: "none" }, 0)
+        .fromTo(".reel-text > *", { y: 50, autoAlpha: 0 }, { y: 0, autoAlpha: 1, stagger: 0.12, ease: "power2.out" }, 0.25);
 
       /* Formula: kartu muncul bergantian */
       gsap.from(".f-card", {

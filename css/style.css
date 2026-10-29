@@ -93,60 +93,62 @@ button { font: inherit; color: inherit; }
   .site-header .btn { margin-left: auto; }
 }
 
-/* 1. Hero */
-.hero { position: relative; height: 230vh; }
+/* 1. Hero: kiri teks, kanan produk. Ukuran produk mengikuti kotaknya sendiri (container query). */
+.hero { position: relative; height: 200vh; }
 .hero-stage {
   position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden;
-  display: grid; grid-template-rows: auto 1fr auto; justify-items: center;
-  padding: calc(var(--header-h) + 2vh) var(--gutter) 4vh;
+  width: min(1280px, 100%); margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1.05fr; align-items: center; gap: clamp(24px, 4vw, 64px);
+  padding: calc(var(--header-h) + 16px) var(--gutter) 32px;
 }
+.hero-copy { position: relative; z-index: 4; }
 .hero-title {
-  position: relative; z-index: 1;
-  font-size: clamp(44px, 9.4vw, 148px); font-weight: 700; letter-spacing: -.045em;
-  text-align: center; white-space: nowrap; line-height: .95;
+  font-size: clamp(48px, 7.4vw, 124px); font-weight: 700; letter-spacing: -.045em; line-height: .95;
+  max-width: 7ch;
 }
-.hero-layers { position: relative; width: 100%; height: 100%; }
+.hero-line { margin-top: clamp(18px, 2.4vw, 28px); font-size: clamp(17px, 1.7vw, 22px); font-weight: 500; max-width: 24ch; }
+.hero-foot { margin-top: clamp(24px, 3vw, 36px); }
+.hero-layers { position: relative; height: 100%; max-height: 760px; container-type: size; }
 .layer-main {
-  position: absolute; z-index: 3; left: 50%; top: 50%;
-  height: min(100%, 560px); aspect-ratio: 1200 / 1668;
-  transform: translate(-50%, -50%);
+  position: absolute; z-index: 3; left: 50%; top: 50%; translate: -50% -50%;
+  width: min(66cqw, 88cqh * .75); aspect-ratio: 3 / 4;
 }
 .layer-main img, .layer img {
   width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius);
-  box-shadow: 0 30px 60px -30px rgba(17, 17, 17, .35);
+  box-shadow: 0 30px 60px -30px rgba(17, 17, 17, .4);
 }
-.layer-main img { position: absolute; inset: 0; }
+.layer-main img, .layer img { position: absolute; inset: 0; }
+/* Foto varian lain mengintip dari balik produk utama */
+.layer { position: absolute; z-index: 2; aspect-ratio: 3 / 4; width: min(34cqw, 36cqh * .75); }
+.layer-a { left: 0;  top: 6%;     rotate: -8deg; }
+.layer-b { left: 4%; bottom: 4%;  rotate: 5deg; }
+.layer-c { right: 0; top: 2%;     rotate: 7deg; }
+.layer-d { right: 3%; bottom: 6%; rotate: -5deg; }
 
 /* Lampu mati: hero gelap, produk tinggal siluet. Kelas dilepas JS sehingga lampu menyala. */
 .hero { transition: background-color 1.6s ease; }
 .hero-title, .hero-line { transition: color 1.6s ease; }
 .hero-terang { transition: opacity 1.8s ease .1s; }
+/* Semua produk menyala, berurutan sedikit: tengah dulu, lalu kiri-kanan */
+.layer-a .hero-terang, .layer-c .hero-terang { transition-delay: .35s; }
+.layer-b .hero-terang, .layer-d .hero-terang { transition-delay: .6s; }
 .hero-foot .btn { transition: background-color 1.6s ease, color 1.6s ease, border-color 1.6s ease, transform .25s ease; }
 .lights-off .hero { background-color: #0B1014; }
 .lights-off .hero-title, .lights-off .hero-line { color: var(--cloud); }
 .lights-off .hero-terang { opacity: 0; }
 .lights-off .hero-foot .btn-dark { background: var(--cloud); color: var(--ink); border-color: var(--cloud); }
-.layer { position: absolute; z-index: 2; aspect-ratio: 600 / 834; width: clamp(110px, 13vw, 210px); }
-.layer-a { left: 4%;  top: 2%;    rotate: -5deg; }
-.layer-b { left: 12%; bottom: 0;  rotate: 4deg; width: clamp(96px, 11vw, 180px); }
-.layer-e { left: 25%; top: 20%;   rotate: -2deg; width: clamp(90px, 10vw, 160px); z-index: 1; }
-.layer-c { right: 4%; top: 0;     rotate: 5deg; }
-.layer-d { right: 13%; bottom: 2%; rotate: -4deg; width: clamp(96px, 11vw, 180px); }
-.hero-foot { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; justify-content: center; z-index: 4; }
-.hero-line { font-size: clamp(17px, 1.8vw, 22px); font-weight: 500; }
 
-@media (max-width: 700px) {
-  .hero-stage { padding-top: calc(var(--header-h) + 16px); }
-  .hero-title { font-size: clamp(40px, 12.4vw, 64px); white-space: normal; max-width: 7ch; }
-  .layer-main { height: min(80%, 400px); }
-  .layer { width: 26vw; }
-  .layer-a { left: -4%; top: 4%; }
-  .layer-c { right: -4%; top: 0; }
-  .layer-b { left: -2%; bottom: 0; width: 24vw; }
-  .layer-d { right: -2%; bottom: 4%; width: 24vw; }
-  .layer-e { display: none; }
-  .hero-foot { flex-direction: column; gap: 14px; text-align: center; }
-  .hero-line { max-width: 22ch; }
+/* HP: teks di atas, produk di bawah */
+@media (max-width: 760px) {
+  .hero-stage {
+    grid-template-columns: 1fr; grid-template-rows: auto 1fr; gap: 12px; text-align: center;
+    padding-top: calc(var(--header-h) + 12px); padding-bottom: 20px;
+  }
+  .hero-title { font-size: clamp(40px, 12vw, 60px); max-width: none; }
+  .hero-line { margin: 12px auto 0; font-size: 16px; }
+  .hero-foot { margin-top: 18px; }
+  .layer-main { width: min(62cqw, 92cqh * .75); }
+  .layer { width: min(36cqw, 40cqh * .75); }
 }
 
 /* 2. Formula */
@@ -170,19 +172,27 @@ button { font: inherit; color: inherit; }
 }
 
 /* 3. Momen */
-/* 3a. Reel: jendela lengkung yang membesar jadi video penuh */
+/* 3a. Reel: kiri teks, kanan video dalam jendela lengkung yang membesar */
 .reel { position: relative; background: #111; color: #fff; }
-.reel-stage { position: relative; height: 100vh; height: 100svh; overflow: hidden; display: grid; place-items: center; }
-.reel-window { position: absolute; inset: 0; }
-.reel-window::after {
-  content: ""; position: absolute; inset: 0;
-  background: linear-gradient(180deg, rgba(0, 0, 0, .25), rgba(0, 0, 0, .55));
+.reel-stage {
+  position: relative; height: 100vh; height: 100svh; overflow: hidden;
+  width: min(1280px, 100%); margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: clamp(24px, 5vw, 80px);
+  padding: calc(var(--header-h) + 16px) var(--gutter) 40px;
+}
+.reel-text .eyebrow { color: rgba(255, 255, 255, .8); }
+.reel-text .h2 { max-width: 12ch; font-size: clamp(36px, 5.2vw, 80px); }
+.reel-sub { margin-top: 20px; font-size: clamp(17px, 1.7vw, 21px); font-weight: 500; max-width: 26ch; color: rgba(255, 255, 255, .85); }
+.reel-window {
+  justify-self: center; height: 100%; max-height: 760px; aspect-ratio: 3 / 4; max-width: 100%;
+  border-radius: 50% 50% 28px 28px / 37.5% 37.5% 28px 28px; /* atas setengah lingkaran */ overflow: hidden; background: #222;
 }
 .reel-video { width: 100%; height: 100%; object-fit: cover; display: block; }
-.reel-text { position: relative; z-index: 2; text-align: center; padding: 0 var(--gutter); }
-.reel-text .eyebrow { color: rgba(255, 255, 255, .85); }
-.reel-text .h2 { margin: 0 auto; max-width: 14ch; font-size: clamp(36px, 6.4vw, 92px); }
-.reel-sub { margin-top: 18px; font-size: clamp(17px, 1.8vw, 21px); font-weight: 500; }
+@media (max-width: 760px) {
+  .reel-stage { grid-template-columns: 1fr; grid-template-rows: auto 1fr; text-align: center; gap: 20px; }
+  .reel-text .h2, .reel-sub { margin-left: auto; margin-right: auto; }
+  .reel-window { height: 100%; }
+}
 .momen-stage { position: relative; }
 .momen-progress { display: none; }
 .momen-panel {
@@ -374,4 +384,5 @@ button { font: inherit; color: inherit; }
   .hero { height: auto; }
   .hero-stage { position: relative; min-height: 100svh; height: auto; }
   .hero-layers { min-height: 60vh; }
+  .reel-stage { height: auto; min-height: 100svh; }
 }
