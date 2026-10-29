@@ -9,6 +9,8 @@ Website Zerodeo, versi awal untuk dilihat tim.
   - `scene/`: foto Hero Revisi, untuk lapisan parallax di hero.
   - `video/`: potongan video tanpa suara dan tanpa teks tertanam (reel dari Teaser 2, kantor, lapangan, olahraga) plus posternya.
   - `logo/`: logo SVG dari design system Zerodeo dan ikon dingin.
+- `cerita.html`, `css/cerita.css`, `js/cerita.js`: prototipe scrollytelling. Pilih varian di hero, botolnya ikut turun dan cerita tiap bab berganti sesuai varian. Terbit di `/cerita`, `noindex`, tidak ditautkan dari `index.html`. Bisa langsung buka varian tertentu: `/cerita?varian=vital-fresh`.
+- `img/botol/`: botol tanpa latar (dipotong otomatis dari foto katalog, sementara sampai ada file transparan asli): `tutup` dan `buka`, tinggi 1000 dan 500 px.
 - `PROMPT.md`: prompt yang dipakai untuk membangun situs ini.
 - `KONTEN.md`: semua teks dan aturan klaim, diambil dari "Zerodeo Product Knowledge". Teks varian di `js/main.js` disalin dari sini.
 - `assets/`: foto asli produk, momen, cadangan, dan logo. Tidak ikut terbit.
