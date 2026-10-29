@@ -42,28 +42,40 @@
   </div>
 
   <main>
-    <!-- 1. Pilih varian -->
-    <section class="pilih" id="pilih" aria-labelledby="pilih-title">
+    <!-- 1. Pembuka video, lalu pilih varian saat di-scroll -->
+    <section class="pilih" id="pilih" aria-labelledby="intro-title">
       <div class="pilih-stage">
+        <div class="latar" aria-hidden="true">
+          <video class="latar-video" muted loop playsinline preload="auto"></video>
+          <span class="latar-redup"></span>
+        </div>
+        <div class="intro">
+          <h1 id="intro-title" class="intro-title">Gerak Tanpa Ragu</h1>
+          <p class="intro-line">Deodoran untuk orang yang banyak bergerak.</p>
+          <span class="intro-scroll" aria-hidden="true">Scroll</span>
+        </div>
         <div class="pilih-copy">
-          <h1 id="pilih-title" class="pilih-title">Gerak Tanpa Ragu</h1>
-          <p class="pilih-line">Pilih Zerodeo-mu, lalu scroll. Botolnya ikut cerita.</p>
-          <div class="chips" role="group" aria-label="Sorot varian per momen">
-            <button class="chip" type="button" data-momen="kantor" aria-pressed="false">Kantor</button>
-            <button class="chip" type="button" data-momen="lapangan" aria-pressed="false">Lapangan</button>
-            <button class="chip" type="button" data-momen="olahraga" aria-pressed="false">Olahraga</button>
+          <div class="copy-in">
+            <h2 class="pilih-title">Pilih Zerodeo&#8209;mu.</h2>
+            <p class="pilih-line">Lalu scroll. Botolnya ikut cerita.</p>
+            <div class="chips" role="group" aria-label="Sorot varian per momen">
+              <button class="chip" type="button" data-momen="kantor" aria-pressed="false">Kantor</button>
+              <button class="chip" type="button" data-momen="lapangan" aria-pressed="false">Lapangan</button>
+              <button class="chip" type="button" data-momen="olahraga" aria-pressed="false">Olahraga</button>
+            </div>
           </div>
         </div>
-        <div class="pilih-grid" id="pilih-grid" role="radiogroup" aria-label="Pilih varian"></div>
+        <div class="pilih-kanan">
+          <div class="pilih-panel">
+            <div class="pilih-grid" id="pilih-grid" role="radiogroup" aria-label="Pilih varian"></div>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- 2. Hook dan momen -->
+    <!-- 2. Hook: botol dan kalimatnya saja -->
     <section class="bab bab-hook" id="hook" aria-labelledby="hook-title">
       <div class="bab-inner">
-        <div class="jendela">
-          <video class="jendela-video" data-autoplay muted loop playsinline preload="none"></video>
-        </div>
         <div class="isi isi-kiri">
           <p class="eyebrow" data-isi="momenLabel"></p>
           <h2 id="hook-title" class="h2 hook-text" data-isi="hookKutip"></h2>

@@ -80,6 +80,11 @@
     lapangan: { label: "Kerja lapangan", video: "img/video/lapangan.mp4", poster: "img/video/lapangan-poster.webp" },
     olahraga: { label: "Olahraga", video: "img/video/olahraga.mp4", poster: "img/video/olahraga-poster.webp" }
   };
+  /* Video pembuka: reel (kantor, gudang, tinju). HP pakai potongan tegak. */
+  var REEL = {
+    lebar: { video: "img/video/reel.mp4", poster: "img/video/reel-poster.webp" },
+    tegak: { video: "img/video/reel-tegak.mp4", poster: "img/video/reel-tegak-poster.webp" }
+  };
 
   var byId = {};
   VARIAN.forEach(function (v) { byId[v.id] = v; });
@@ -141,6 +146,7 @@
       var m = chip.getAttribute("data-momen");
       momenChips.forEach(function (c) { c.setAttribute("aria-pressed", String(on && c === chip)); });
       tiles.forEach(function (t) { t.classList.toggle("is-redup", on && t.getAttribute("data-momen") !== m); });
+      putarLatar(on ? MOMEN[m] : null);
     });
   });
 
@@ -169,7 +175,8 @@
   var keadaan = "tutup"; /* tutup terbuka di bab cara pakai */
   var gerak = document.querySelector(".botol-gerak");
   var imgs = gerak.querySelectorAll(".botol-img");
-  var video = document.querySelector(".jendela-video");
+  var video = document.querySelector(".latar-video");
+  var latar = document.querySelector(".latar");
 
   function tukarBotol() {
     var v = byId[current];
@@ -186,10 +193,9 @@
     if (next.complete && next.naturalWidth) next.onload();
   }
 
-  function setVarian(id) {
+  function setVarian(id, opts) {
     var v = byId[id] || byId["max-fresh"];
     if (v.id === current) return;
-    var momenLama = current && byId[current].momen;
     current = v.id;
 
     root.style.setProperty("--tint", v.tint);
@@ -235,14 +241,6 @@
       ]));
     });
 
-    var m = MOMEN[v.momen];
-    if (v.momen !== momenLama) {
-      video.poster = m.poster;
-      video.src = m.video;
-      video.setAttribute("aria-label", "Video " + m.label.toLowerCase() + " dengan Zerodeo");
-      if (videoTerlihat && !reduceMotion) play(video);
-    }
-
     tiles.forEach(function (tile) {
       var on = tile.getAttribute("data-pilih") === v.id;
       tile.setAttribute("aria-checked", String(on));
@@ -250,11 +248,13 @@
     });
     gantiMenu.querySelectorAll("button").forEach(function (b) { b.setAttribute("aria-checked", String(b.getAttribute("data-ganti") === v.id)); });
 
-    try {
-      var url = new URL(window.location.href);
-      url.searchParams.set("varian", v.id);
-      history.replaceState(null, "", url);
-    } catch (e) { /* abaikan */ }
+    if (!(opts && opts.awal)) {
+      try {
+        var url = new URL(window.location.href);
+        url.searchParams.set("varian", v.id);
+        history.replaceState(null, "", url);
+      } catch (e) { /* abaikan */ }
+    }
 
     if (hitungUlang) hitungUlang();
   }
@@ -272,21 +272,37 @@
     }
   });
 
-  /* ---------- Video: hanya diputar saat terlihat ---------- */
-  var videoTerlihat = false;
+  /* ---------- Video latar pembuka ---------- */
+  /* Gerak dikurangi: tidak diputar, cukup posternya. Selain itu diputar hanya saat terlihat. */
+  var videoTerlihat = true;
   function play(v) { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
-  if (reduceMotion) video.controls = true;
-  else if ("IntersectionObserver" in window) {
+  function putarLatar(m) {
+    var sumber = m || REEL[window.innerWidth <= 760 || window.innerHeight > window.innerWidth ? "tegak" : "lebar"];
+    if (video.getAttribute("src") === sumber.video) return;
+    latar.style.backgroundImage = "url(" + sumber.poster + ")";
+    video.poster = sumber.poster;
+    if (reduceMotion) return;
+    video.src = sumber.video;
+    if (videoTerlihat) play(video);
+  }
+  putarLatar(null);
+  if (!reduceMotion && "IntersectionObserver" in window) {
     new IntersectionObserver(function (entries) {
       videoTerlihat = entries[0].isIntersecting;
       if (videoTerlihat) play(video); else video.pause();
-    }, { threshold: 0.2 }).observe(video);
+    }, { threshold: 0.05 }).observe(latar);
   }
 
-  /* Varian awal: dari ?varian=, kalau tidak ada Max Fresh */
-  var awal = "max-fresh";
-  try { awal = new URL(window.location.href).searchParams.get("varian") || awal; } catch (e) { /* abaikan */ }
-  setVarian(byId[awal] ? awal : "max-fresh");
+  /* Varian awal: dari ?varian=, kalau tidak ada Max Fresh. Link per varian langsung masuk ke ceritanya. */
+  var awal = null;
+  try { awal = new URL(window.location.href).searchParams.get("varian"); } catch (e) { /* abaikan */ }
+  var langsung = !!byId[awal];
+  setVarian(langsung ? awal : "max-fresh", { awal: true });
+  if (langsung) {
+    window.addEventListener("load", function () {
+      window.scrollTo(0, document.getElementById("hook").offsetTop);
+    });
+  }
 
   /* Pill ganti varian muncul setelah keluar dari hero */
   var pilih = document.getElementById("pilih");
@@ -303,7 +319,7 @@
   /* Pose botol per bab: titik tengah (fraksi layar), skala, putaran. HP: botol di sepertiga atas. */
   var POSE = {
     lebar: {
-      hook: [0.70, 0.60, 0.92, 0], formula: [0.5, 0.60, 0.82, -6], manfaat: [0.27, 0.54, 1, 5],
+      hook: [0.70, 0.55, 1.05, 0], formula: [0.5, 0.60, 0.82, -6], manfaat: [0.27, 0.54, 1, 5],
       wangi: [0.70, 0.52, 1.05, -4], pakai: [0.28, 0.54, 1, 0], cocok: [0.25, 0.55, 0.85, 3]
     },
     hp: {
@@ -318,11 +334,14 @@
     return function () {
       var k = kotak(), W = window.innerWidth, H = window.innerHeight;
       if (nama === "hero") {
-        /* Tepat di atas tile varian terpilih, dalam koordinat halaman */
+        /* Tepat di atas tile varian terpilih. Panggung hero menempel di layar, jadi posisinya dihitung dari
+           offset di dalam panggung (tidak terpengaruh animasi pembuka yang sedang berjalan). */
         var tile = grid.querySelector(".tile.is-dibawa .tile-box");
-        var r = tile.getBoundingClientRect();
-        var s = r.height / k.h;
-        return { x: r.left + r.width / 2 - k.w / 2, y: r.top + window.scrollY + r.height / 2 - k.h / 2, scale: s, rotation: 0, autoAlpha: 1 };
+        var ox = 0, oy = 0, n = tile;
+        while (n && n !== stage) { ox += n.offsetLeft; oy += n.offsetTop; n = n.offsetParent; }
+        ox += stage.getBoundingClientRect().left;
+        var s = tile.offsetHeight / k.h;
+        return { x: ox + tile.offsetWidth / 2 - k.w / 2, y: oy + tile.offsetHeight / 2 - k.h / 2, scale: s, rotation: 0, autoAlpha: 1 };
       }
       if (nama === "keluar") {
         var akhir = POSE[hp() ? "hp" : "lebar"].cocok;
@@ -337,7 +356,8 @@
   var urutan = [["hero", null], ["hook", "hook"], ["formula", "formula"], ["manfaat", "manfaat"],
     ["wangi", "wangi"], ["pakai", "pakai"], ["cocok", "cocok"], ["keluar", "faq"]];
   var KUNCI = ["x", "y", "scale", "rotation", "autoAlpha"];
-  var seg = [], poseAwal = null, sekarang = null, target = {};
+  var stage = document.querySelector(".pilih-stage");
+  var seg = [], poseAwal = null, sekarang = null, introAkhir = 0;
 
   /* Tiap perpindahan terjadi saat bab berikutnya masuk layar: dari atas bab di bawah layar sampai atas bab di atas layar */
   function hitung() {
@@ -347,23 +367,16 @@
       var top = document.getElementById(u[1]).offsetTop;
       return { a: top - H, b: top, dari: poses[i], ke: poses[i + 1] };
     });
-    /* Pose hero dihitung di posisi scroll awal transisi pertama */
     poseAwal = poses[0];
-    poseAwal.y -= seg[0].a;
+    introAkhir = H * 0.8;
   }
   /* Ganti varian: botol meluncur ke pose baru. Ukuran layar berubah: langsung lompat. */
   hitungUlang = hitung;
 
-  function halus(t) { return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; }
+  function halus(t) { return -(Math.cos(Math.PI * t) - 1) / 2; } /* sine in-out: mulai dan berhenti pelan */
   function poseDi(y) {
-    var s0 = seg[0];
-    if (y <= s0.a) {
-      /* Masih di hero: botol ikut tile-nya kalau hero lebih tinggi dari layar */
-      var p = Object.assign({}, poseAwal);
-      p.y += s0.a - y;
-      return p;
-    }
-    var redup = hp() ? 0.85 : 0; /* HP: botol meredup sebentar saat bab berganti, supaya tidak menimpa teks yang lewat */
+    if (y <= seg[0].a) return poseAwal;
+    var redup = hp() ? 0.7 : 0; /* HP: botol meredup sebentar saat bab berganti, supaya tidak menimpa teks yang lewat */
     for (var i = 0; i < seg.length; i++) {
       var s = seg[i];
       if (y < s.a) return s.dari;
@@ -378,26 +391,45 @@
   }
 
   hitung();
-  gsap.set(gerak, { transformOrigin: "50% 50%" });
+  gsap.set(gerak, { transformOrigin: "50% 50%", force3D: true });
   gerak.style.visibility = "visible";
 
-  /* Botol mengejar pose targetnya tiap frame: terasa lembut, tidak patah-patah mengikuti roda mouse */
+  /* Botol mengejar pose targetnya tiap frame dengan sedikit jeda: terasa melayang, tidak patah-patah mengikuti roda mouse */
   gsap.ticker.add(function (time, dt) {
-    var tgt = poseDi(window.scrollY);
-    if (!sekarang) sekarang = Object.assign({}, tgt);
+    var y = window.scrollY;
+    var tgt = poseDi(y);
+    /* Selama video pembuka, botol masih bagian dari grid; botol panggung baru muncul setelah grid tampil penuh */
+    var lepas = y >= introAkhir;
+    root.classList.toggle("botol-lepas", lepas);
+    if (!sekarang || !lepas) sekarang = Object.assign({}, tgt);
     else {
-      var f = 1 - Math.pow(1 - 0.16, dt / 16.67);
+      var f = 1 - Math.pow(1 - 0.085, dt / 16.67);
       KUNCI.forEach(function (k) { sekarang[k] += (tgt[k] - sekarang[k]) * f; });
     }
-    gsap.set(gerak, sekarang);
+    gsap.set(gerak, Object.assign({}, sekarang, lepas ? null : { autoAlpha: 0 }));
   });
   ST.addEventListener("refresh", function () { hitung(); sekarang = null; });
 
-  /* Hero: varian lain memudar saat botol terpilih berangkat */
-  gsap.to(".pilih-copy, .tile", {
-    autoAlpha: 0, y: -40, ease: "none",
-    scrollTrigger: { trigger: "#hook", start: "top bottom", end: "top 40%", scrub: 0.5, invalidateOnRefresh: true }
-  });
+  /* Pembuka: video penuh layar mengecil dan meredup jadi latar, judul pergi, botol naik satu per satu.
+     Semua pakai fromTo dan tanpa invalidateOnRefresh, supaya nilai awal tidak terekam ulang saat refresh. */
+  gsap.timeline({
+    defaults: { ease: "power2.out" },
+    scrollTrigger: { trigger: "#pilih", start: "top top", end: function () { return "+=" + introAkhir; }, scrub: 1 }
+  })
+    .fromTo(".latar", { clipPath: "inset(0% 0% 0% 0% round 0px)" }, { clipPath: "inset(3% 2% 3% 2% round 32px)", ease: "none", duration: 1 }, 0)
+    .fromTo(".latar-redup", { opacity: 0.55 }, { opacity: 1, ease: "none", duration: 1 }, 0)
+    .fromTo(".intro", { autoAlpha: 1, y: 0 }, { autoAlpha: 0, y: -80, duration: 0.4 }, 0)
+    .fromTo(".copy-in", { autoAlpha: 0, y: 50 }, { autoAlpha: 1, y: 0, duration: 0.45 }, 0.35)
+    .fromTo(".pilih-panel", { autoAlpha: 0, y: 80 }, { autoAlpha: 1, y: 0, duration: 0.45 }, 0.3)
+    .fromTo(".tile", { autoAlpha: 0, y: 120 }, { autoAlpha: 1, y: 0, duration: 0.5, stagger: 0.06 }, 0.4);
+
+  /* Botol terpilih berangkat: panel, judul, dan video memudar ke warna varian */
+  gsap.timeline({
+    defaults: { ease: "none" },
+    scrollTrigger: { trigger: "#hook", start: "top bottom", end: "top 35%", scrub: 0.6, invalidateOnRefresh: true }
+  })
+    .to(".pilih-copy, .pilih-kanan", { autoAlpha: 0, y: -40 }, 0)
+    .to(".latar", { autoAlpha: 0, duration: 0.6 }, 0);
 
   /* Cara pakai: tutup terbuka selama bab ini di layar */
   ST.create({
