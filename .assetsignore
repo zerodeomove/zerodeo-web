@@ -1,0 +1,11 @@
+# File yang tidak ikut terbit ke Cloudflare
+.git
+.gitignore
+.assetsignore
+.claude
+wrangler.jsonc
+node_modules
+*.md
+*.zip
+assets
+screenshots

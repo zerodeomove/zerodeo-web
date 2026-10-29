@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Zerodeo · Gerak Tanpa Ragu</title>
+  <meta name="description" content="Zerodeo, deodoran untuk orang yang banyak bergerak: kerja kantor, kerja lapangan, dan olahraga. 6 varian, roll on dan spray.">
+  <meta name="theme-color" content="#F0EFEB">
+  <link rel="icon" href="img/logo/zerodeo.svg" type="image/svg+xml">
+  <script>
+    /* Lampu mati dulu di hero, lalu menyala (lihat js/main.js). Dilewati kalau gerak dikurangi. */
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      document.documentElement.classList.add("lights-off");
+      setTimeout(function () { document.documentElement.classList.remove("lights-off"); }, 4000);
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preload" as="image" type="image/webp" imagesrcset="img/hero/max-fresh-siluet-800.webp 800w, img/hero/max-fresh-siluet-1200.webp 1200w" imagesizes="(min-width: 700px) 420px, 70vw">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <a class="skip" href="#varian">Langsung ke varian</a>
+
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="Zerodeo, ke atas">
+      <img src="img/logo/zerodeo.svg" alt="Zerodeo" width="112" height="25">
+    </a>
+    <nav class="nav" aria-label="Navigasi utama">
+      <a href="#formula">Formula</a>
+      <a href="#momen">Momen</a>
+      <a href="#varian">Varian</a>
+      <a href="#cocok">Cari yang cocok</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <a class="btn btn-dark btn-sm" href="#beli">Beli</a>
+  </header>
+
+  <main id="top">
+    <!-- 1. Hero: siluet menyala, lalu foto lain masuk dari samping -->
+    <section class="hero" data-bg="#F0EFEB" aria-labelledby="hero-title">
+      <div class="hero-stage">
+        <h1 id="hero-title" class="hero-title">Gerak Tanpa Ragu</h1>
+
+        <div class="hero-layers">
+          <figure class="layer layer-a" data-dir="-1" data-speed="1.4">
+            <img src="img/scene/crystal-glow-1-500.webp" width="500" height="666" alt="Zerodeo Crystal Glow roll on di meja kerja berlatar pink">
+          </figure>
+          <figure class="layer layer-b" data-dir="-1" data-speed="0.8">
+            <img src="img/scene/daily-active-3-500.webp" width="500" height="666" alt="Zerodeo Daily Active roll on berlatar kuning dengan helm proyek">
+          </figure>
+          <figure class="layer layer-e" data-dir="-1" data-speed="1.1">
+            <img src="img/scene/bright-aura-3-500.webp" width="500" height="666" alt="Zerodeo Bright Aura spray di meja kantor yang terang">
+          </figure>
+          <figure class="layer layer-c" data-dir="1" data-speed="1.2">
+            <img src="img/scene/vital-fresh-2-500.webp" width="500" height="666" alt="Zerodeo Vital Fresh spray dengan sepatu lari">
+          </figure>
+          <figure class="layer layer-d" data-dir="1" data-speed="0.7">
+            <img src="img/scene/zen-protect-2-500.webp" width="500" height="666" alt="Zerodeo Zen Protect spray berlatar kuning dengan sarung tinju">
+          </figure>
+
+          <figure class="layer-main">
+            <img class="hero-siluet" src="img/hero/max-fresh-siluet-1200.webp" srcset="img/hero/max-fresh-siluet-800.webp 800w, img/hero/max-fresh-siluet-1200.webp 1200w" sizes="(min-width: 700px) 420px, 70vw" width="1200" height="1599" alt="" fetchpriority="high">
+            <img class="hero-terang" src="img/hero/max-fresh-terang-1200.webp" srcset="img/hero/max-fresh-terang-800.webp 800w, img/hero/max-fresh-terang-1200.webp 1200w" sizes="(min-width: 700px) 420px, 70vw" width="1200" height="1599" alt="Zerodeo Max Fresh roll on, kemasan Extra Cooling, dengan sarung tinju dan tali skipping">
+          </figure>
+        </div>
+
+        <div class="hero-foot">
+          <p class="hero-line">Deodoran untuk orang yang banyak bergerak.</p>
+          <a class="btn btn-dark" href="#varian">Lihat varian</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Formula -->
+    <section class="formula section" id="formula" data-bg="#F0EFEB" aria-labelledby="formula-title">
+      <div class="wrap">
+        <p class="eyebrow">Formula</p>
+        <h2 id="formula-title" class="h2">Tiga hal di setiap Zerodeo.</h2>
+        <div class="formula-grid">
+          <article class="f-card">
+            <span class="f-num">01</span>
+            <h3>Dual Active Shield</h3>
+            <p>2 bahan antiperspirant dalam 1 formula: aluminium sesquichlorohydrate dan zinc phenolsulfonate. Roll on melindungi hingga 48 jam.</p>
+          </article>
+          <article class="f-card">
+            <span class="f-num">02</span>
+            <h3>Alpha arbutin</h3>
+            <p>Ada di keenam varian. Bantu mencerahkan ketiak gelap dengan pemakaian rutin.</p>
+          </article>
+          <article class="f-card f-card-cool">
+            <span class="f-num">03</span>
+            <img class="f-icon" src="img/logo/ikon-dingin.png" width="64" height="64" alt="" loading="lazy">
+            <h3>Menthol</h3>
+            <p>Sensasi dingin saat dipakai, segar di awal aktivitas.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3a. Reel: jendela lengkung yang membesar jadi video penuh -->
+    <section class="reel" id="momen" data-bg="#111111" aria-labelledby="reel-title">
+      <div class="reel-stage">
+        <div class="reel-window">
+          <video class="reel-video" data-autoplay muted loop playsinline preload="none" poster="img/video/reel-poster.webp" aria-label="Cuplikan orang bergerak: kantor, gudang, dan ring tinju">
+            <source src="img/video/reel.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="reel-text">
+          <p class="eyebrow">Tiga momen gerak</p>
+          <h2 id="reel-title" class="h2">Satu lini, banyak momen gerak.</h2>
+          <p class="reel-sub">Kantor, lapangan, atau olahraga? Ada Zerodeo-nya.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3b. Tiga momen (pinned) -->
+    <section class="momen" aria-label="Tiga momen gerak">
+      <div class="momen-stage">
+        <div class="momen-progress" aria-hidden="true"><span></span></div>
+
+        <article class="momen-panel" data-bg="#F5D3E2" style="--tint:#F5D3E2">
+          <figure class="momen-media">
+            <video data-autoplay muted loop playsinline preload="none" poster="img/video/kantor-poster.webp" width="540" height="960" aria-label="Video kerja kantor dengan Zerodeo Bright Aura spray">
+              <source src="img/video/kantor.mp4" type="video/mp4">
+            </video>
+          </figure>
+          <div class="momen-text">
+            <p class="momen-idx">1/3</p>
+            <h3>Kerja kantor</h3>
+            <p class="momen-quote">Aman di ruang meeting, wanginya nggak ganggu orang sebelah.</p>
+            <ul class="momen-varian" data-varian="crystal-glow,bright-aura"></ul>
+          </div>
+        </article>
+
+        <article class="momen-panel" data-bg="#F6E8A4" style="--tint:#F6E8A4">
+          <figure class="momen-media">
+            <video data-autoplay muted loop playsinline preload="none" poster="img/video/lapangan-poster.webp" width="540" height="960" aria-label="Video kerja lapangan di gudang dengan Zerodeo Daily Active roll on">
+              <source src="img/video/lapangan.mp4" type="video/mp4">
+            </video>
+          </figure>
+          <div class="momen-text">
+            <p class="momen-idx">2/3</p>
+            <h3>Kerja lapangan</h3>
+            <p class="momen-quote">Seharian di jalan, wanginya tetap kalem dan nggak bikin enek.</p>
+            <ul class="momen-varian" data-varian="daily-active"></ul>
+          </div>
+        </article>
+
+        <article class="momen-panel" data-bg="#D5E6F0" style="--tint:#D5E6F0">
+          <figure class="momen-media">
+            <video data-autoplay muted loop playsinline preload="none" poster="img/video/olahraga-poster.webp" width="540" height="960" aria-label="Video lari di lintasan dengan Zerodeo">
+              <source src="img/video/olahraga.mp4" type="video/mp4">
+            </video>
+          </figure>
+          <div class="momen-text">
+            <p class="momen-idx">3/3</p>
+            <h3>Olahraga</h3>
+            <p class="momen-quote">Habis keringetan, yang tersisa segar, bukan campuran bau dan parfum.</p>
+            <ul class="momen-varian" data-varian="max-fresh,vital-fresh,zen-protect"></ul>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- 4. Enam varian -->
+    <section class="varian section" id="varian" data-bg="#F0EFEB" aria-labelledby="varian-title">
+      <div class="wrap">
+        <p class="eyebrow">6 varian · 2 format</p>
+        <h2 id="varian-title" class="h2">Pilih yang pas sama gerakmu.</h2>
+        <div class="chips" role="group" aria-label="Saring format">
+          <button class="chip" type="button" data-filter="semua" aria-pressed="true">Semua</button>
+          <button class="chip" type="button" data-filter="rollon" aria-pressed="false">Roll on</button>
+          <button class="chip" type="button" data-filter="spray" aria-pressed="false">Spray</button>
+        </div>
+        <div class="varian-grid" id="varian-grid"></div>
+      </div>
+    </section>
+
+    <!-- 5. Cari yang cocok -->
+    <section class="cocok section" id="cocok" data-bg="#F0EFEB" aria-labelledby="cocok-title">
+      <div class="wrap">
+        <p class="eyebrow">Cari yang cocok</p>
+        <h2 id="cocok-title" class="h2">Kamu yang mana?</h2>
+        <div class="chips chips-wrap" role="group" aria-label="Pilih persona" id="persona-chips"></div>
+        <div class="cocok-result" id="cocok-result" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- 6. Wangi tipis -->
+    <section class="wangi section" id="wangi" data-bg="#E4EEF3" aria-labelledby="wangi-title">
+      <div class="wrap wangi-grid">
+        <div>
+          <p class="eyebrow">Soal wangi</p>
+          <h2 id="wangi-title" class="h2">Wangi tipis itu sengaja.</h2>
+          <p class="lead">Lembut, nggak nyengat, enak dipakai dari pagi sampai malam.</p>
+          <div class="qa">
+            <p class="qa-q">“Wanginya kok tipis?”</p>
+            <p class="qa-a">“Sengaja. Deodoran tugasnya jaga bau, bukan jadi parfum. Jadi aman dipadukan dengan parfum favoritmu.”</p>
+          </div>
+        </div>
+        <ul class="wangi-list">
+          <li><span>Kantor</span>Aman di ruang meeting, wanginya nggak ganggu orang sebelah.</li>
+          <li><span>Lapangan</span>Seharian di jalan, wanginya tetap kalem dan nggak bikin enek.</li>
+          <li><span>Olahraga</span>Habis keringetan, yang tersisa segar, bukan campuran bau dan parfum.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 7. Cara pakai -->
+    <section class="pakai section" id="pakai" data-bg="#F0EFEB" aria-labelledby="pakai-title">
+      <div class="wrap">
+        <p class="eyebrow">Cara pakai</p>
+        <h2 id="pakai-title" class="h2">Dua format, caranya beda tipis.</h2>
+        <div class="pakai-grid">
+          <article class="pakai-card">
+            <img src="img/katalog/daily-active-3-700.webp" width="700" height="933" alt="Zerodeo Daily Active roll on 40 ml dengan tutup terbuka" loading="lazy">
+            <div>
+              <h3>Roll on <small>40 ml</small></h3>
+              <p>Oles ke ketiak bersih dan kering. Tunggu kering sebelum berpakaian.</p>
+            </div>
+          </article>
+          <article class="pakai-card">
+            <img src="img/katalog/vital-fresh-2-700.webp" width="700" height="933" alt="Zerodeo Vital Fresh spray 60 ml dengan tutup terbuka" loading="lazy">
+            <div>
+              <h3>Spray <small>60 ml</small></h3>
+              <p>Kocok, lalu semprot ke ketiak bersih dan kering. Jangan ke wajah.</p>
+            </div>
+          </article>
+        </div>
+        <p class="note">Untuk hasil cerah: pakai rutin setiap hari. Hasilnya bertahap dan berbeda tiap orang.</p>
+      </div>
+    </section>
+
+    <!-- 8. FAQ -->
+    <section class="faq section" id="faq" data-bg="#F0EFEB" aria-labelledby="faq-title">
+      <div class="wrap wrap-narrow">
+        <p class="eyebrow">FAQ</p>
+        <h2 id="faq-title" class="h2">Yang sering ditanya.</h2>
+        <div class="faq-list">
+          <details>
+            <summary>Bedanya roll on dan spray?</summary>
+            <p>Sama-sama 2 bahan antiperspirant. Roll on untuk olesan tepat, spray terasa dingin dan cepat.</p>
+          </details>
+          <details>
+            <summary>Bisa dipakai pria?</summary>
+            <p>Daily Active, Vital Fresh, Zen Protect untuk pria dan wanita. Crystal Glow dan Bright Aura khusus wanita.</p>
+          </details>
+          <details>
+            <summary>Kapan ketiak terlihat cerah?</summary>
+            <p>Bertahap dengan pemakaian rutin, beda tiap orang.</p>
+          </details>
+          <details>
+            <summary>Bikin noda kuning di baju?</summary>
+            <p>Roll on tidak meninggalkan noda di pakaian. Tetap tunggu kering sebelum berpakaian.</p>
+          </details>
+          <details>
+            <summary>Boleh setelah cukur?</summary>
+            <p>Hindari kulit luka atau iritasi. Kalau perih atau merah, hentikan pemakaian.</p>
+          </details>
+          <details>
+            <summary>Aman untuk ibu hamil?</summary>
+            <p>Belum ada data khusus. Sarankan konsultasi dengan dokter.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. Penutup: video di belakang -->
+    <section class="penutup" id="beli" data-bg="#111111" aria-labelledby="penutup-title">
+      <video class="penutup-video" data-autoplay muted loop playsinline preload="none" poster="img/video/reel-poster.webp" aria-hidden="true">
+        <source src="img/video/reel.mp4" type="video/mp4">
+      </video>
+      <div class="wrap penutup-inner">
+        <h2 id="penutup-title" class="penutup-title">Gerak Tanpa Ragu</h2>
+        <p class="penutup-line">6 varian, 2 format, 3 momen gerak.</p>
+        <div class="penutup-cta">
+          <a class="btn btn-light" href="#">Beli di Shopee</a>
+          <a class="btn btn-ghost" href="#">Beli di TikTok Shop</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-row">
+      <img src="img/logo/zerodeo.svg" alt="Zerodeo" width="140" height="31" loading="lazy">
+      <p>Deodoran untuk orang yang banyak bergerak.</p>
+    </div>
+  </footer>
+
+  <dialog class="detail" id="detail" aria-labelledby="detail-title">
+    <div class="detail-inner">
+      <button class="detail-close" type="button" aria-label="Tutup">×</button>
+      <div class="detail-gallery">
+        <figure class="detail-photo"><img id="detail-img" src="" alt="" width="1200" height="1600"></figure>
+        <div class="detail-thumbs" id="detail-thumbs" role="group" aria-label="Pilih foto"></div>
+      </div>
+      <div class="detail-body">
+        <p class="detail-format" id="detail-format"></p>
+        <h3 id="detail-title"></h3>
+        <p class="detail-kemasan" id="detail-kemasan"></p>
+        <ul class="badges" id="detail-badges"></ul>
+        <dl class="detail-list">
+          <dt>Manfaat</dt><dd id="detail-manfaat"></dd>
+          <dt>Wangi</dt><dd id="detail-wangi"></dd>
+          <dt>Untuk</dt><dd id="detail-untuk"></dd>
+          <dt>Kandungan</dt><dd><ul id="detail-kandungan"></ul></dd>
+        </dl>
+      </div>
+    </div>
+  </dialog>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script src="js/main.js" defer></script>
+</body>
+</html>
