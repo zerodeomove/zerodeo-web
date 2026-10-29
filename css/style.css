@@ -129,9 +129,6 @@ button { font: inherit; color: inherit; }
 .hero { transition: background-color 1.6s ease; }
 .hero-title, .hero-line { transition: color 1.6s ease; }
 .hero-terang { transition: opacity 1.8s ease .1s; }
-/* Semua produk menyala, berurutan sedikit: tengah dulu, lalu kiri-kanan */
-.layer-a .hero-terang, .layer-c .hero-terang { transition-delay: .35s; }
-.layer-b .hero-terang, .layer-d .hero-terang { transition-delay: .6s; }
 .hero-foot .btn { transition: background-color 1.6s ease, color 1.6s ease, border-color 1.6s ease, transform .25s ease; }
 .lights-off .hero { background-color: #0B1014; }
 .lights-off .hero-title, .lights-off .hero-line { color: var(--cloud); }
