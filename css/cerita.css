@@ -124,6 +124,41 @@ button { font: inherit; color: inherit; }
   border-radius: 50%; background: radial-gradient(closest-side, rgba(17, 17, 17, .28), transparent);
 }
 
+/* Belum memilih: dua siluet gelap ikut turun; begitu varian dipilih, botolnya menyala */
+.siluet {
+  position: absolute; left: 50%; bottom: 0; width: 190%; height: 100%; translate: -50% 0;
+  opacity: 0; transition: opacity .5s ease;
+}
+.siluet img { position: absolute; bottom: 0; width: auto; max-width: none; filter: brightness(0); opacity: .82; }
+.siluet-rollon { left: 4%; height: 76%; }
+.siluet-spray { right: 8%; height: 100%; }
+.belum .siluet { opacity: 1; }
+.belum .botol-img { opacity: 0; }
+.belum .bayang { width: 150%; }
+.menyala .botol-img.is-on { animation: menyala 1.1s ease-out; }
+@keyframes menyala {
+  0% { filter: brightness(0) drop-shadow(0 18px 24px rgba(17, 17, 17, .18)); }
+  45% { filter: brightness(1.25) drop-shadow(0 0 40px rgba(255, 255, 255, .9)); }
+  100% { filter: brightness(1) drop-shadow(0 18px 24px rgba(17, 17, 17, .18)); }
+}
+.belum [data-saat="pilih"], :root:not(.belum) [data-saat="belum"] { display: none !important; }
+.belum .botol-inline { display: none !important; }
+
+/* Ajakan memilih di bab yang isinya khusus per varian */
+.ajak { display: flex; gap: 8px; margin-top: 22px; flex-wrap: wrap; }
+.ajak button {
+  display: flex; flex-direction: column; align-items: center; gap: 6px; width: 72px; padding: 10px 4px 8px;
+  border: 0; border-radius: var(--radius-sm); background: rgba(255, 255, 255, .7); cursor: pointer;
+  font-size: 11px; font-weight: 600; line-height: 1.2; transition: background-color .2s ease, translate .2s ease;
+}
+.ajak button:hover { background: #fff; translate: 0 -3px; }
+.ajak img { height: 48px; width: auto; }
+@media (max-width: 760px) {
+  .ajak { gap: 6px; margin-top: 14px; }
+  .ajak button { width: calc((100% - 30px) / 6); padding: 8px 2px 6px; font-size: 9px; }
+  .ajak img { height: 38px; }
+}
+
 /* 1. Pembuka: video penuh layar, lalu saat di-scroll video mengecil jadi latar dan botol naik */
 .pilih { position: relative; height: 220vh; background: var(--tint); color: #fff; transition: background-color .6s ease; }
 .pilih-stage {

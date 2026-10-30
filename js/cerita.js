@@ -110,9 +110,20 @@
 
   /* ---------- Teks per varian ---------- */
   function isi(v) {
+    if (!v) return {
+      pill: "Pilih varian", nama: "Zerodeo", beli: "Beli", kemasan: "", format: "",
+      momenLabel: "Belum milih",
+      hookKutip: "Pilih dulu, biar ceritanya nyala.",
+      manfaat: "Manfaatnya beda-beda tiap varian. Pilih satu, lihat punyamu.",
+      aromaUtama: "Wanginya beda-beda.",
+      wangi: "Ada amethyst, floral, moringa, mint, hideout, sampai lavish. Semua tipis, nyaman seharian.",
+      untuk: "", formatPendek: "Roll on & spray", formatPendekKecil: "roll on dan spray",
+      pakaiJudul: "Oles atau semprot.",
+      cocokJudul: "Kamu yang mana?"
+    };
     var spray = v.tipe === "spray";
     return {
-      nama: v.nama, kemasan: v.kemasan, format: v.format, manfaat: v.manfaat, wangi: v.wangi, untuk: v.untuk,
+      pill: v.nama, beli: "Beli " + v.nama, nama: v.nama, kemasan: v.kemasan, format: v.format, manfaat: v.manfaat, wangi: v.wangi, untuk: v.untuk,
       aromaUtama: v.aromaUtama,
       hookKutip: "“" + v.hook + "”",
       momenLabel: MOMEN[v.momen].label,
@@ -169,9 +180,22 @@
   document.addEventListener("click", function (e) { if (!ganti.contains(e.target)) tutupMenu(); });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") tutupMenu(); });
 
+  /* Ajakan memilih: 6 botol mini, dipakai di bab yang isinya khusus per varian */
+  document.querySelectorAll(".ajak").forEach(function (box) {
+    box.setAttribute("role", "group");
+    box.setAttribute("aria-label", "Pilih varian");
+    VARIAN.forEach(function (o) {
+      box.appendChild(el("button", { type: "button", "data-ganti": o.id, "aria-label": "Pilih " + o.nama }, [
+        el("img", { src: botol(o, "tutup", 500), alt: "", width: "26", height: "48" }),
+        el("span", { text: o.nama })
+      ]));
+    });
+  });
+
   /* ---------- Ganti varian ---------- */
   var current = null;
   var hitungUlang = null; /* diisi bagian gerak: hitung ulang pose botol */
+  var nyalakan = false;
   var keadaan = "tutup"; /* tutup terbuka di bab cara pakai */
   var gerak = document.querySelector(".botol-gerak");
   var imgs = gerak.querySelectorAll(".botol-img");
@@ -180,6 +204,7 @@
 
   function tukarBotol() {
     var v = byId[current];
+    if (!v) return;
     var src = botol(v, keadaan);
     var on = gerak.querySelector(".botol-img.is-on");
     if (on && on.getAttribute("src") === src) return;
@@ -188,24 +213,38 @@
       next.onload = null;
       next.classList.add("is-on");
       if (on) on.classList.remove("is-on");
+      if (nyalakan) {
+        nyalakan = false;
+        root.classList.remove("menyala");
+        void gerak.offsetWidth;
+        root.classList.add("menyala");
+        setTimeout(function () { root.classList.remove("menyala"); }, 1200);
+      }
     };
     next.src = src;
     if (next.complete && next.naturalWidth) next.onload();
   }
 
   function setVarian(id, opts) {
-    var v = byId[id] || byId["max-fresh"];
-    if (v.id === current) return;
-    current = v.id;
+    var v = byId[id] || null;
+    var id2 = v ? v.id : null;
+    if (id2 === current && !(opts && opts.awal)) return;
+    var dariSiluet = !current;
+    current = id2;
 
-    root.style.setProperty("--tint", v.tint);
-    root.style.setProperty("--aksen", v.aksen);
-    gerak.classList.toggle("is-rollon", v.tipe === "rollon");
-    tukarBotol();
+    root.classList.toggle("belum", !v);
+    root.style.setProperty("--tint", v ? v.tint : "#E8E6E0");
+    root.style.setProperty("--aksen", v ? v.aksen : "#3F403D");
+    if (v) {
+      gerak.classList.toggle("is-rollon", v.tipe === "rollon");
+      /* Dari siluet: botol menyala begitu gambarnya siap */
+      nyalakan = dariSiluet && !(opts && opts.awal);
+      tukarBotol();
+    }
 
     var t = isi(v);
     document.querySelectorAll("[data-isi]").forEach(function (n) { n.textContent = t[n.getAttribute("data-isi")]; });
-    document.querySelectorAll(".botol-inline").forEach(function (im) {
+    if (v) document.querySelectorAll(".botol-inline").forEach(function (im) {
       var k = im.getAttribute("data-botol");
       im.src = botol(v, k, 500);
       im.alt = alt(v, k);
@@ -214,27 +253,30 @@
     /* Aturan klaim: "48 jam · tidak bernoda" hanya roll on, spray "sepanjang hari"; antibakteri hanya Vital Fresh & Zen Protect */
     var badges = document.getElementById("badges");
     badges.textContent = "";
-    (v.tipe === "rollon" ? ["Hingga 48 jam", "Tidak bernoda di baju"] : ["Nyaman sepanjang hari"])
-      .concat(v.antibakteri ? ["Mengandung zat antibakteri"] : [])
+    (!v ? [] : v.tipe === "rollon" ? ["Hingga 48 jam", "Tidak bernoda di baju"] : ["Nyaman sepanjang hari"])
+      .concat(v && v.antibakteri ? ["Mengandung zat antibakteri"] : [])
       .forEach(function (b) { badges.appendChild(el("li", { text: b })); });
-    document.querySelectorAll("[data-hanya='antibakteri']").forEach(function (n) { n.hidden = !v.antibakteri; });
+    /* Belum memilih: kartu antibakteri tetap tampil, teksnya sudah menyebut variannya */
+    document.querySelectorAll("[data-hanya='antibakteri']").forEach(function (n) { n.hidden = !!v && !v.antibakteri; });
 
     var langkah = document.getElementById("langkah");
     langkah.textContent = "";
-    (v.tipe === "spray"
+    (!v ? ["Roll on: oles ke ketiak bersih dan kering, tunggu kering sebelum berpakaian.",
+      "Spray: kocok, lalu semprot ke ketiak bersih dan kering. Jangan ke wajah."]
+      : v.tipe === "spray"
       ? ["Kocok dulu.", "Semprot ke ketiak bersih dan kering.", "Jangan ke wajah."]
       : ["Pastikan ketiak bersih dan kering.", "Oleskan.", "Tunggu kering sebelum berpakaian."])
       .forEach(function (s) { langkah.appendChild(el("li", { text: s })); });
 
     var persona = document.getElementById("persona");
     persona.textContent = "";
-    PERSONA.filter(function (p) { return p.varian.indexOf(v.id) !== -1; })
+    PERSONA.filter(function (p) { return !v || p.varian.indexOf(v.id) !== -1; })
       .forEach(function (p) { persona.appendChild(el("li", { text: p.nama })); });
 
     var lain = document.getElementById("lain");
     lain.textContent = "";
     VARIAN.forEach(function (o) {
-      if (o.id === v.id) return;
+      if (v && o.id === v.id) return;
       lain.appendChild(el("button", { type: "button", "data-ganti": o.id, "aria-label": "Ganti ke " + o.nama }, [
         el("img", { src: botol(o, "tutup", 500), alt: "", width: "26", height: "52" }),
         el("span", { text: o.nama })
@@ -242,13 +284,13 @@
     });
 
     tiles.forEach(function (tile) {
-      var on = tile.getAttribute("data-pilih") === v.id;
+      var on = !!v && tile.getAttribute("data-pilih") === v.id;
       tile.setAttribute("aria-checked", String(on));
       tile.classList.toggle("is-dibawa", on);
     });
-    gantiMenu.querySelectorAll("button").forEach(function (b) { b.setAttribute("aria-checked", String(b.getAttribute("data-ganti") === v.id)); });
+    gantiMenu.querySelectorAll("button").forEach(function (b) { b.setAttribute("aria-checked", String(!!v && b.getAttribute("data-ganti") === v.id)); });
 
-    if (!(opts && opts.awal)) {
+    if (v && !(opts && opts.awal)) {
       try {
         var url = new URL(window.location.href);
         url.searchParams.set("varian", v.id);
@@ -297,7 +339,7 @@
   var awal = null;
   try { awal = new URL(window.location.href).searchParams.get("varian"); } catch (e) { /* abaikan */ }
   var langsung = !!byId[awal];
-  setVarian(langsung ? awal : "max-fresh", { awal: true });
+  setVarian(langsung ? awal : null, { awal: true });
   if (langsung) {
     window.addEventListener("load", function () {
       window.scrollTo(0, document.getElementById("hook").offsetTop);
@@ -337,6 +379,14 @@
         /* Tepat di atas tile varian terpilih. Panggung hero menempel di layar, jadi posisinya dihitung dari
            offset di dalam panggung (tidak terpengaruh animasi pembuka yang sedang berjalan). */
         var tile = grid.querySelector(".tile.is-dibawa .tile-box");
+        if (!tile) {
+          /* Belum memilih: siluet muncul dari tengah panel grid */
+          var pr = document.querySelector(".pilih-panel");
+          var px = 0, py = 0, m = pr;
+          while (m && m !== stage) { px += m.offsetLeft; py += m.offsetTop; m = m.offsetParent; }
+          px += stage.getBoundingClientRect().left;
+          return { x: px + pr.offsetWidth / 2 - k.w / 2, y: py + pr.offsetHeight / 2 - k.h / 2, scale: 0.5, rotation: 0, autoAlpha: 0 };
+        }
         var ox = 0, oy = 0, n = tile;
         while (n && n !== stage) { ox += n.offsetLeft; oy += n.offsetTop; n = n.offsetParent; }
         ox += stage.getBoundingClientRect().left;
