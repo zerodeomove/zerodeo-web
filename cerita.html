@@ -36,11 +36,6 @@
   <div class="panggung" aria-hidden="true">
     <div class="botol-gerak">
       <span class="bayang"></span>
-      <!-- Belum memilih: dua siluet (roll on dan spray) yang menyala saat varian dipilih -->
-      <span class="siluet">
-        <img class="siluet-rollon" src="img/botol/daily-active-tutup-1000.webp" alt="" width="534" height="1000">
-        <img class="siluet-spray" src="img/botol/vital-fresh-tutup-1000.webp" alt="" width="350" height="1000">
-      </span>
       <img class="botol-img is-on" alt="" width="433" height="1000">
       <img class="botol-img" alt="" width="433" height="1000">
     </div>
@@ -63,6 +58,7 @@
           <div class="copy-in">
             <h2 class="pilih-title">Pilih Zerodeo&#8209;mu.</h2>
             <p class="pilih-line">Lalu scroll. Botolnya ikut cerita.</p>
+            <p class="pilih-tahan" role="status">Pilih dulu salah satu, ceritanya baru jalan.</p>
             <div class="chips" role="group" aria-label="Sorot varian per momen">
               <button class="chip" type="button" data-momen="kantor" aria-pressed="false">Kantor</button>
               <button class="chip" type="button" data-momen="lapangan" aria-pressed="false">Lapangan</button>
@@ -84,8 +80,7 @@
         <div class="isi isi-kiri">
           <p class="eyebrow" data-isi="momenLabel"></p>
           <h2 id="hook-title" class="h2 hook-text" data-isi="hookKutip"></h2>
-          <p class="lead" data-saat="pilih"><b data-isi="nama"></b> · <span data-isi="kemasan"></span> · <span data-isi="format"></span></p>
-          <div class="ajak" data-saat="belum"></div>
+          <p class="lead"><b data-isi="nama"></b> · <span data-isi="kemasan"></span> · <span data-isi="format"></span></p>
           <img class="botol-inline" data-botol="tutup" alt="">
         </div>
       </div>
@@ -115,8 +110,7 @@
           <p class="eyebrow">Manfaat</p>
           <h2 id="manfaat-title" class="h2 h2-sedang" data-isi="manfaat"></h2>
           <ul class="badges" id="badges"></ul>
-          <p class="untuk" data-saat="pilih"><span>Untuk</span> <span data-isi="untuk"></span></p>
-          <div class="ajak" data-saat="belum"></div>
+          <p class="untuk"><span>Untuk</span> <span data-isi="untuk"></span></p>
           <img class="botol-inline" data-botol="tutup" alt="">
         </div>
       </div>
@@ -132,7 +126,6 @@
           <p class="eyebrow">Wangi</p>
           <h2 id="wangi-title" class="h2" data-isi="aromaUtama"></h2>
           <p class="lead" data-isi="wangi"></p>
-          <div class="ajak" data-saat="belum"></div>
           <div class="qa">
             <p class="qa-q">“Wanginya kok tipis?”</p>
             <p class="qa-a">“Sengaja. Deodoran tugasnya jaga bau, bukan jadi parfum. Jadi aman dipadukan dengan parfum favoritmu.”</p>
@@ -162,9 +155,8 @@
           <p class="eyebrow">Cocok buat</p>
           <h2 id="cocok-title" class="h2 h2-sedang" data-isi="cocokJudul"></h2>
           <ul class="persona" id="persona"></ul>
-          <p class="lain-judul" data-saat="pilih">Mau lihat yang lain?</p>
-          <div class="lain" id="lain" role="group" aria-label="Ganti varian" data-saat="pilih"></div>
-          <div class="ajak" data-saat="belum"></div>
+          <p class="lain-judul">Mau lihat yang lain?</p>
+          <div class="lain" id="lain" role="group" aria-label="Ganti varian"></div>
           <img class="botol-inline" data-botol="tutup" alt="">
         </div>
       </div>
