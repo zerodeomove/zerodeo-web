@@ -180,22 +180,9 @@
   document.addEventListener("click", function (e) { if (!ganti.contains(e.target)) tutupMenu(); });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") tutupMenu(); });
 
-  /* Ajakan memilih: 6 botol mini, dipakai di bab yang isinya khusus per varian */
-  document.querySelectorAll(".ajak").forEach(function (box) {
-    box.setAttribute("role", "group");
-    box.setAttribute("aria-label", "Pilih varian");
-    VARIAN.forEach(function (o) {
-      box.appendChild(el("button", { type: "button", "data-ganti": o.id, "aria-label": "Pilih " + o.nama }, [
-        el("img", { src: botol(o, "tutup", 500), alt: "", width: "26", height: "48" }),
-        el("span", { text: o.nama })
-      ]));
-    });
-  });
-
   /* ---------- Ganti varian ---------- */
   var current = null;
   var hitungUlang = null; /* diisi bagian gerak: hitung ulang pose botol */
-  var nyalakan = false;
   var keadaan = "tutup"; /* tutup terbuka di bab cara pakai */
   var gerak = document.querySelector(".botol-gerak");
   var imgs = gerak.querySelectorAll(".botol-img");
@@ -213,13 +200,6 @@
       next.onload = null;
       next.classList.add("is-on");
       if (on) on.classList.remove("is-on");
-      if (nyalakan) {
-        nyalakan = false;
-        root.classList.remove("menyala");
-        void gerak.offsetWidth;
-        root.classList.add("menyala");
-        setTimeout(function () { root.classList.remove("menyala"); }, 1200);
-      }
     };
     next.src = src;
     if (next.complete && next.naturalWidth) next.onload();
@@ -229,7 +209,7 @@
     var v = byId[id] || null;
     var id2 = v ? v.id : null;
     if (id2 === current && !(opts && opts.awal)) return;
-    var dariSiluet = !current;
+    var dariBelum = !current;
     current = id2;
 
     root.classList.toggle("belum", !v);
@@ -237,8 +217,6 @@
     root.style.setProperty("--aksen", v ? v.aksen : "#3F403D");
     if (v) {
       gerak.classList.toggle("is-rollon", v.tipe === "rollon");
-      /* Dari siluet: botol menyala begitu gambarnya siap */
-      nyalakan = dariSiluet && !(opts && opts.awal);
       tukarBotol();
     }
 
@@ -298,6 +276,7 @@
       } catch (e) { /* abaikan */ }
     }
 
+    if (dariBelum && v && window.ScrollTrigger && !diam) window.ScrollTrigger.refresh();
     if (hitungUlang) hitungUlang();
   }
 
@@ -346,6 +325,39 @@
     });
   }
 
+  /* ---------- Ditahan di grid sampai memilih ---------- */
+  /* Halaman memang berakhir di grid (bab cerita disembunyikan). Kalau pengunjung terus mencoba scroll,
+     tampilkan pesan dan botol-botolnya bergoyang sedikit. */
+  var tahanTimer = null;
+  function colek() {
+    if (current) return;
+    root.classList.remove("tahan");
+    void root.offsetWidth;
+    root.classList.add("tahan");
+    clearTimeout(tahanTimer);
+    tahanTimer = setTimeout(function () { root.classList.remove("tahan"); }, 2200);
+  }
+  function diUjung() { return window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4; }
+  window.addEventListener("wheel", function (e) { if (e.deltaY > 0 && diUjung()) colek(); }, { passive: true });
+  var sentuhY = null;
+  window.addEventListener("touchstart", function (e) { sentuhY = e.touches[0].clientY; }, { passive: true });
+  window.addEventListener("touchmove", function (e) {
+    if (sentuhY !== null && sentuhY - e.touches[0].clientY > 30 && diUjung()) { colek(); sentuhY = null; }
+  }, { passive: true });
+  window.addEventListener("keydown", function (e) {
+    if (["ArrowDown", "PageDown", " ", "End"].indexOf(e.key) !== -1 && diUjung()) colek();
+  });
+  /* Tombol Beli dan tautan ke bab: belum memilih, bawa ke grid dulu */
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest('a[href^="#"]');
+    if (!a || current || a.getAttribute("href") === "#pilih") return;
+    var tujuan = document.querySelector(a.getAttribute("href"));
+    if (!tujuan || tujuan.closest("#pilih")) return;
+    e.preventDefault();
+    window.scrollTo({ top: document.documentElement.scrollHeight, behavior: diam ? "auto" : "smooth" });
+    setTimeout(colek, diam ? 0 : 600);
+  });
+
   /* Pill ganti varian muncul setelah keluar dari hero */
   var pilih = document.getElementById("pilih");
   function onScroll() { ganti.classList.toggle("is-on", window.scrollY > pilih.offsetHeight * 0.5); }
@@ -380,7 +392,7 @@
            offset di dalam panggung (tidak terpengaruh animasi pembuka yang sedang berjalan). */
         var tile = grid.querySelector(".tile.is-dibawa .tile-box");
         if (!tile) {
-          /* Belum memilih: siluet muncul dari tengah panel grid */
+          /* Belum memilih: tidak ada botol yang turun */
           var pr = document.querySelector(".pilih-panel");
           var px = 0, py = 0, m = pr;
           while (m && m !== stage) { px += m.offsetLeft; py += m.offsetTop; m = m.offsetParent; }
@@ -449,7 +461,7 @@
     var y = window.scrollY;
     var tgt = poseDi(y);
     /* Selama video pembuka, botol masih bagian dari grid; botol panggung baru muncul setelah grid tampil penuh */
-    var lepas = y >= introAkhir;
+    var lepas = !!current && y >= introAkhir;
     root.classList.toggle("botol-lepas", lepas);
     if (!sekarang || !lepas) sekarang = Object.assign({}, tgt);
     else {
@@ -476,7 +488,8 @@
   /* Botol terpilih berangkat: panel, judul, dan video memudar ke warna varian */
   gsap.timeline({
     defaults: { ease: "none" },
-    scrollTrigger: { trigger: "#hook", start: "top bottom", end: "top 35%", scrub: 0.6, invalidateOnRefresh: true }
+    /* Dipicu dari bawah hero (= atas bab hook), karena bab hook disembunyikan selama belum memilih */
+    scrollTrigger: { trigger: "#pilih", start: "bottom bottom", end: "bottom 35%", scrub: 0.6, invalidateOnRefresh: true }
   })
     .to(".pilih-copy, .pilih-kanan", { autoAlpha: 0, y: -40 }, 0)
     .to(".latar", { autoAlpha: 0, duration: 0.6 }, 0);
