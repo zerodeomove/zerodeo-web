@@ -29,7 +29,7 @@
       </button>
       <div class="ganti-menu" id="ganti-menu" hidden></div>
     </div>
-    <a class="btn btn-dark btn-sm" href="#beli">Beli</a>
+    <button class="btn btn-dark btn-sm" type="button" data-buka-beli aria-haspopup="dialog">Beli</button>
   </header>
 
   <!-- Botol yang ikut turun. Digerakkan js/cerita.js; disembunyikan saat gerak dikurangi. -->
@@ -202,8 +202,7 @@
         <h2 id="penutup-title" class="penutup-title">Gerak Tanpa Ragu</h2>
         <p class="penutup-line"><span data-isi="nama"></span>, <span data-isi="formatPendekKecil"></span>. Siap ikut gerakmu.</p>
         <div class="penutup-cta">
-          <a class="btn btn-light" href="#"><span data-isi="beli"></span> di Shopee</a>
-          <a class="btn btn-ghost" href="#">Beli di TikTok Shop</a>
+          <button class="btn btn-light" type="button" data-buka-beli aria-haspopup="dialog"><span data-isi="beli"></span></button>
         </div>
       </div>
     </section>
@@ -215,6 +214,30 @@
       <p>Deodoran untuk orang yang banyak bergerak.</p>
     </div>
   </footer>
+
+  <!-- Panel beli: HP panel dari bawah, laptop kartu di tengah. Isi dan tautan diatur js/cerita.js (TOKO). -->
+  <dialog class="beli" id="panel-beli" aria-labelledby="beli-judul">
+    <span class="beli-garis" aria-hidden="true"></span>
+    <button class="beli-tutup" type="button" aria-label="Tutup">×</button>
+    <div class="beli-produk">
+      <img class="beli-img" alt="" width="250" height="500">
+      <div>
+        <small>Pilihanmu</small>
+        <b id="beli-judul"></b>
+        <span class="beli-format"></span>
+      </div>
+    </div>
+    <div class="beli-semua">
+      <b>Semua varian Zerodeo</b>
+      <span>6 varian, roll on dan spray. Pilih variannya di toko.</span>
+      <div class="beli-deret" aria-hidden="true"></div>
+    </div>
+    <p class="beli-label">Beli di</p>
+    <div class="beli-toko"></div>
+    <button class="beli-ganti" type="button" aria-expanded="false">Ganti varian</button>
+    <div class="beli-pilihan" hidden role="group" aria-label="Ganti varian"></div>
+    <p class="beli-cat">Ke halaman toko Zerodeo</p>
+  </dialog>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>

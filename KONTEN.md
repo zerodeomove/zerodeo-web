@@ -105,3 +105,11 @@ Jangan dipakai:
 - Istilah medis atau "menyembuhkan".
 - Nama merek parfum lain.
 - Janji jangka waktu hasil cerah.
+
+## Tautan toko (halaman /cerita)
+
+Tombol "Beli" membuka panel pilihan toko. Tautannya diisi di `js/cerita.js`, di bagian `TOKO` paling atas:
+
+- `toko`: halaman toko Zerodeo di marketplace itu (wajib). Kalau kosong, tombolnya tertulis "Tautan menyusul".
+- `varian`: halaman produk per varian (opsional). Varian yang kosong otomatis ke halaman toko.
+
