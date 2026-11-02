@@ -328,14 +328,13 @@ button { font: inherit; color: inherit; }
   font-weight: 600; font-size: 17px; text-decoration: none; color: #fff; transition: transform .2s ease;
 }
 .toko:hover { transform: translateY(-2px); }
-.toko i { width: 32px; height: 32px; border-radius: 9px; display: grid; place-items: center; background: #fff; font-style: normal; font-weight: 700; }
+.toko i { width: 32px; height: 32px; flex: none; border-radius: 9px; display: grid; place-items: center; background: #fff; }
+.toko i img { width: 20px; height: 20px; }
 .toko em { margin-left: auto; font-style: normal; font-size: 20px; }
 .toko small { margin-left: auto; font-size: 12px; font-weight: 500; opacity: .8; white-space: nowrap; }
 .toko small + em { margin-left: 8px; }
 .toko-shopee { background: #EE4D2D; }
-.toko-shopee i { color: #EE4D2D; }
 .toko-tiktok { background: #111; }
-.toko-tiktok i { color: #111; }
 .toko[aria-disabled="true"] { cursor: default; }
 .beli-ganti {
   display: block; margin: 16px auto 0; padding: 4px 8px; border: 0; background: none; cursor: pointer;

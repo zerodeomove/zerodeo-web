@@ -90,11 +90,11 @@
      halaman toko yang kosong membuat tombolnya tertulis "Tautan menyusul". */
   var TOKO = [
     {
-      id: "shopee", nama: "Shopee", ikon: "S", toko: "",
+      id: "shopee", nama: "Shopee", logo: "img/logo/shopee.svg", toko: "",
       varian: { "crystal-glow": "", "bright-aura": "", "daily-active": "", "max-fresh": "", "vital-fresh": "", "zen-protect": "" }
     },
     {
-      id: "tiktok", nama: "TikTok Shop / Tokopedia", ikon: "♪", toko: "",
+      id: "tiktok", nama: "TikTok Shop / Tokopedia", logo: "img/logo/tiktok.svg", toko: "",
       varian: { "crystal-glow": "", "bright-aura": "", "daily-active": "", "max-fresh": "", "vital-fresh": "", "zen-protect": "" }
     }
   ];
@@ -223,7 +223,10 @@
     beliToko.textContent = "";
     TOKO.forEach(function (t) {
       var url = (v && t.varian[v.id]) || t.toko;
-      var a = el("a", { "class": "toko toko-" + t.id }, [el("i", { text: t.ikon, "aria-hidden": "true" }), document.createTextNode(t.nama)]);
+      var a = el("a", { "class": "toko toko-" + t.id }, [
+        el("i", { "aria-hidden": "true" }, [el("img", { src: t.logo, alt: "", width: "20", height: "20" })]),
+        document.createTextNode(t.nama)
+      ]);
       if (url) {
         a.href = url;
         a.target = "_blank";
