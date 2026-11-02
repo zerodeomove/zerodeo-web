@@ -86,6 +86,19 @@
     tegak: { video: "img/video/reel-tegak.mp4", poster: "img/video/reel-tegak-poster.webp" }
   };
 
+  /* Tautan toko. Isi di sini saja (lihat KONTEN.md). Tautan varian yang kosong otomatis jatuh ke halaman toko;
+     halaman toko yang kosong membuat tombolnya tertulis "Tautan menyusul". */
+  var TOKO = [
+    {
+      id: "shopee", nama: "Shopee", ikon: "S", toko: "",
+      varian: { "crystal-glow": "", "bright-aura": "", "daily-active": "", "max-fresh": "", "vital-fresh": "", "zen-protect": "" }
+    },
+    {
+      id: "tiktok", nama: "TikTok Shop / Tokopedia", ikon: "♪", toko: "",
+      varian: { "crystal-glow": "", "bright-aura": "", "daily-active": "", "max-fresh": "", "vital-fresh": "", "zen-protect": "" }
+    }
+  ];
+
   var byId = {};
   VARIAN.forEach(function (v) { byId[v.id] = v; });
 
@@ -179,6 +192,84 @@
   });
   document.addEventListener("click", function (e) { if (!ganti.contains(e.target)) tutupMenu(); });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") tutupMenu(); });
+
+  /* ---------- Panel beli ---------- */
+  var beli = document.getElementById("panel-beli");
+  var beliToko = beli.querySelector(".beli-toko");
+  var beliPilihan = beli.querySelector(".beli-pilihan");
+  var beliGanti = beli.querySelector(".beli-ganti");
+  VARIAN.forEach(function (v) {
+    beli.querySelector(".beli-deret").appendChild(el("img", {
+      src: botol(v, "tutup", 500), alt: "", width: "26", height: "52", "class": v.tipe === "rollon" ? "is-rollon" : ""
+    }));
+    beliPilihan.appendChild(el("button", { type: "button", "data-ganti": v.id, "aria-pressed": "false", "aria-label": "Ganti ke " + v.nama }, [
+      el("img", { src: botol(v, "tutup", 500), alt: "", width: "20", height: "40" }),
+      el("span", { text: v.nama })
+    ]));
+  });
+
+  function renderBeli() {
+    var v = byId[current];
+    if (v) {
+      var img = beli.querySelector(".beli-img");
+      img.src = botol(v, "tutup", 500);
+      img.alt = alt(v);
+      document.getElementById("beli-judul").textContent = v.nama;
+      beli.querySelector(".beli-format").textContent = formatPendek(v) + " · " + v.kemasan;
+    } else {
+      document.getElementById("beli-judul").textContent = "Semua varian Zerodeo";
+    }
+    beliPilihan.querySelectorAll("button").forEach(function (b) { b.setAttribute("aria-pressed", String(!!v && b.getAttribute("data-ganti") === v.id)); });
+    beliToko.textContent = "";
+    TOKO.forEach(function (t) {
+      var url = (v && t.varian[v.id]) || t.toko;
+      var a = el("a", { "class": "toko toko-" + t.id }, [el("i", { text: t.ikon, "aria-hidden": "true" }), document.createTextNode(t.nama)]);
+      if (url) {
+        a.href = url;
+        a.target = "_blank";
+        a.rel = "noopener";
+        a.appendChild(el("em", { text: "→", "aria-hidden": "true" }));
+      } else {
+        a.setAttribute("aria-disabled", "true");
+        a.appendChild(el("small", { text: "Tautan menyusul" }));
+      }
+      beliToko.appendChild(a);
+    });
+  }
+
+  var videoSebelumBeli = false;
+  function bukaBeli() {
+    renderBeli();
+    beliPilihan.hidden = true;
+    beliGanti.setAttribute("aria-expanded", "false");
+    /* Video latar dijeda selama panel terbuka, supaya efek buram tidak memberatkan HP */
+    var vid = document.querySelector(".latar-video");
+    videoSebelumBeli = vid && !vid.paused;
+    if (videoSebelumBeli) vid.pause();
+    root.style.overflow = "hidden";
+    if (typeof beli.showModal === "function") beli.showModal(); else beli.setAttribute("open", "");
+  }
+  function tutupBeli() { if (beli.open) beli.close(); }
+  beli.addEventListener("close", function () {
+    root.style.overflow = "";
+    if (videoSebelumBeli) play(document.querySelector(".latar-video"));
+  });
+  beli.querySelector(".beli-tutup").addEventListener("click", tutupBeli);
+  beli.addEventListener("click", function (e) {
+    if (e.target === beli) tutupBeli(); /* ketuk di luar kartu */
+    if (e.target.closest('a[aria-disabled="true"]')) e.preventDefault();
+  });
+  beliGanti.addEventListener("click", function () {
+    beliPilihan.hidden = !beliPilihan.hidden;
+    beliGanti.setAttribute("aria-expanded", String(!beliPilihan.hidden));
+  });
+  document.querySelectorAll("[data-buka-beli]").forEach(function (b) { b.addEventListener("click", bukaBeli); });
+  /* HP: geser panel ke bawah untuk menutup */
+  var tarikY = null;
+  beli.addEventListener("touchstart", function (e) { tarikY = beli.scrollTop <= 0 ? e.touches[0].clientY : null; }, { passive: true });
+  beli.addEventListener("touchmove", function (e) {
+    if (tarikY !== null && e.touches[0].clientY - tarikY > 80) { tarikY = null; tutupBeli(); }
+  }, { passive: true });
 
   /* ---------- Ganti varian ---------- */
   var current = null;
@@ -276,7 +367,8 @@
       } catch (e) { /* abaikan */ }
     }
 
-    if (dariBelum && v && window.ScrollTrigger && !diam) window.ScrollTrigger.refresh();
+    renderBeli();
+    if (dariBelum && v && window.ScrollTrigger && !diam && !beli.open) window.ScrollTrigger.refresh();
     if (hitungUlang) hitungUlang();
   }
 
@@ -347,17 +439,6 @@
   window.addEventListener("keydown", function (e) {
     if (["ArrowDown", "PageDown", " ", "End"].indexOf(e.key) !== -1 && diUjung()) colek();
   });
-  /* Tombol Beli dan tautan ke bab: belum memilih, bawa ke grid dulu */
-  document.addEventListener("click", function (e) {
-    var a = e.target.closest('a[href^="#"]');
-    if (!a || current || a.getAttribute("href") === "#pilih") return;
-    var tujuan = document.querySelector(a.getAttribute("href"));
-    if (!tujuan || tujuan.closest("#pilih")) return;
-    e.preventDefault();
-    window.scrollTo({ top: document.documentElement.scrollHeight, behavior: diam ? "auto" : "smooth" });
-    setTimeout(colek, diam ? 0 : 600);
-  });
-
   /* Pill ganti varian muncul setelah keluar dari hero */
   var pilih = document.getElementById("pilih");
   function onScroll() { ganti.classList.toggle("is-on", window.scrollY > pilih.offsetHeight * 0.5); }
