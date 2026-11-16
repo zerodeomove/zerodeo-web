@@ -99,6 +99,11 @@
     }
   ];
 
+  /* Botol terurai per varian: hasil potongan render terurai (img/urai/). Satuan: tinggi botol tertutup.
+     l/w/h: posisi kiri dari tengah, lebar, tinggi; yc: atas saat tertutup; yo: atas saat terurai;
+     lebih: tambahan tinggi saat terurai. Varian yang belum ada memakai foto tutup terbuka biasa. */
+  var URAI = {"bright-aura":{"lebih":0.6171,"lapis":[{"n":"selang","z":1,"l":-0.0197,"w":0.0413,"h":0.0825,"yc":0.4021,"yo":0.2044},{"n":"badan","z":2,"l":-0.1732,"w":0.3474,"h":0.7131,"yc":0.2869,"yo":0.2869},{"n":"pump","z":3,"l":-0.107,"w":0.214,"h":0.3791,"yc":0.023,"yo":-0.1747},{"n":"tutup","z":4,"l":-0.1224,"w":0.2476,"h":0.4021,"yc":0.0,"yo":-0.6171}]},"crystal-glow":{"lebih":0.5528,"lapis":[{"n":"bola","z":1,"l":-0.1775,"w":0.3541,"h":0.3426,"yc":0.1795,"yo":-0.0413},{"n":"badan","z":2,"l":-0.2687,"w":0.5384,"h":0.6775,"yc":0.3225,"yo":0.3225},{"n":"tutup","z":4,"l":-0.2524,"w":0.5038,"h":0.4885,"yc":0.0,"yo":-0.5528}]},"vital-fresh":{"lebih":0.7037,"lapis":[{"n":"selang","z":1,"l":-0.0203,"w":0.0405,"h":0.1535,"yc":0.4353,"yo":0.1458},{"n":"badan","z":2,"l":-0.1651,"w":0.3311,"h":0.7008,"yc":0.2992,"yo":0.2992},{"n":"pump","z":3,"l":-0.1042,"w":0.2095,"h":0.3707,"yc":0.0647,"yo":-0.2249},{"n":"tutup","z":4,"l":-0.1236,"w":0.2481,"h":0.4353,"yc":0.0,"yo":-0.7037}]},"zen-protect":{"lebih":0.5806,"lapis":[{"n":"selang","z":1,"l":-0.019,"w":0.0398,"h":0.0882,"yc":0.4269,"yo":0.2362},{"n":"badan","z":2,"l":-0.166,"w":0.333,"h":0.6755,"yc":0.3245,"yo":0.3245},{"n":"pump","z":3,"l":-0.1053,"w":0.2106,"h":0.3596,"yc":0.0674,"yo":-0.1233},{"n":"tutup","z":4,"l":-0.1195,"w":0.241,"h":0.4269,"yc":0.0,"yo":-0.5806}]},"max-fresh":{"lebih":0.6265,"lapis":[{"n":"bola","z":1,"l":-0.1989,"w":0.3989,"h":0.3873,"yc":0.1492,"yo":-0.1048},{"n":"badan","z":2,"l":-0.2667,"w":0.5344,"h":0.6889,"yc":0.3111,"yo":0.3111},{"n":"tutup","z":4,"l":-0.255,"w":0.5101,"h":0.4878,"yc":0.0,"yo":-0.6265}]}};
+
   var byId = {};
   VARIAN.forEach(function (v) { byId[v.id] = v; });
 
@@ -283,6 +288,29 @@
   var video = document.querySelector(".latar-video");
   var latar = document.querySelector(".latar");
 
+  /* Bangun lapisan botol terurai untuk varian ini (kosong kalau belum ada) */
+  var uraiBox = gerak.querySelector(".urai");
+  function bangunUrai(v) {
+    uraiBox.textContent = "";
+    var u = v && URAI[v.id];
+    if (!u) return;
+    uraiBox.style.setProperty("--geser", (u.lebih * 50).toFixed(2)); /* turun separuh tambahan tinggi, supaya tetap di tengah */
+    u.lapis.forEach(function (L) {
+      var im = el("img", { src: "img/urai/" + v.id + "-" + L.n + ".webp", alt: "" });
+      im.style.cssText = "--l:" + L.l + ";--w:" + L.w + ";--h:" + L.h + ";--yc:" + L.yc + ";--dy:" + ((L.yo - L.yc) / L.h).toFixed(4) + ";z-index:" + L.z;
+      uraiBox.appendChild(im);
+    });
+  }
+
+  /* Bab cara pakai: varian dengan data terurai memakai lapisan; lainnya ganti ke foto tutup terbuka */
+  var diPakai = false;
+  function terapkanPakai() {
+    var adaUrai = !!(current && URAI[current]);
+    root.classList.toggle("urai-on", diPakai && adaUrai);
+    keadaan = diPakai && !adaUrai ? "buka" : "tutup";
+    tukarBotol();
+  }
+
   function tukarBotol() {
     var v = byId[current];
     if (!v) return;
@@ -318,9 +346,11 @@
     document.querySelectorAll("[data-isi]").forEach(function (n) { n.textContent = t[n.getAttribute("data-isi")]; });
     if (v) document.querySelectorAll(".botol-inline").forEach(function (im) {
       var k = im.getAttribute("data-botol");
-      im.src = botol(v, k, 500);
+      im.src = k === "buka" && URAI[v.id] ? "img/urai/" + v.id + "-utuh.webp" : botol(v, k, 500);
       im.alt = alt(v, k);
     });
+    bangunUrai(v);
+    terapkanPakai();
 
     /* Aturan klaim: "48 jam · tidak bernoda" hanya roll on, spray "sepanjang hari"; antibakteri hanya Vital Fresh & Zen Protect */
     var badges = document.getElementById("badges");
@@ -458,11 +488,11 @@
   var POSE = {
     lebar: {
       hook: [0.70, 0.55, 1.05, 0], formula: [0.5, 0.60, 0.82, -6], manfaat: [0.27, 0.54, 1, 5],
-      wangi: [0.70, 0.52, 1.05, -4], pakai: [0.28, 0.54, 1, 0], cocok: [0.25, 0.55, 0.85, 3]
+      wangi: [0.70, 0.52, 1.05, -4], pakai: [0.28, 0.53, 0.74, 0], cocok: [0.25, 0.55, 0.85, 3]
     },
     hp: {
       hook: [0.5, 0, 0.82, 0], formula: [0.5, 0, 0.9, -6], manfaat: [0.5, 0, 1, 5],
-      wangi: [0.5, 0, 1, -4], pakai: [0.5, 0, 1, 0], cocok: [0.5, 0, 0.9, 3]
+      wangi: [0.5, 0, 1, -4], pakai: [0.5, 0, 0.5, 0], cocok: [0.5, 0, 0.9, 3]
     }
   };
   function hp() { return window.innerWidth <= 760; }
@@ -581,7 +611,15 @@
   /* Cara pakai: tutup terbuka selama bab ini di layar */
   ST.create({
     trigger: "#pakai", start: "top 45%", end: "bottom 55%",
-    onToggle: function (self) { keadaan = self.isActive ? "buka" : "tutup"; tukarBotol(); }
+    onToggle: function (self) { diPakai = self.isActive; terapkanPakai(); }
+  });
+  /* Saat bab cara pakai menempel, botol terurai pelan mengikuti scroll */
+  ST.create({
+    trigger: "#pakai", start: "top top", end: "+=55%", scrub: 0.6,
+    onUpdate: function (self) {
+      var t = self.progress;
+      uraiBox.style.setProperty("--p", (t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2).toFixed(4));
+    }
   });
 
   /* Isi tiap bab muncul saat babnya menempel */
