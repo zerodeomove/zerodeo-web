@@ -119,6 +119,21 @@ button { font: inherit; color: inherit; }
 .botol-img { opacity: 0; transition: opacity .35s ease; filter: drop-shadow(0 18px 24px rgba(17, 17, 17, .18)); }
 .botol-img.is-on { opacity: 1; }
 .is-rollon .botol-img, .tile-box.is-rollon img { height: 76%; }
+/* Botol terurai: tiap bagian bergeser dari posisi tertutup ke terurai sesuai --p (0 tertutup, 1 terurai).
+   Ukuran dan posisi dalam satuan tinggi botol tertutup (data URAI di js/cerita.js). */
+.urai {
+  position: absolute; left: 50%; bottom: 0; height: 100%; aspect-ratio: 1; opacity: 0; transition: opacity .35s ease;
+  transform: translate(-50%, calc(var(--p, 0) * var(--geser, 0) * 1%));
+}
+.is-rollon .urai { height: 76%; }
+.urai img {
+  position: absolute; max-width: none;
+  left: calc(50% + var(--l) * 100%); top: calc(var(--yc) * 100%); width: calc(var(--w) * 100%); height: calc(var(--h) * 100%);
+  transform: translateY(calc(var(--p, 0) * var(--dy) * 100%));
+  filter: drop-shadow(0 14px 18px rgba(17, 17, 17, .16));
+}
+.urai-on .urai { opacity: 1; }
+.urai-on .botol-img.is-on { opacity: 0; }
 .bayang {
   position: absolute; left: 50%; bottom: -2%; width: 70%; height: 6%; translate: -50% 0;
   border-radius: 50%; background: radial-gradient(closest-side, rgba(17, 17, 17, .28), transparent);
