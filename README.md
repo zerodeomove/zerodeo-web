@@ -10,7 +10,7 @@ Website Zerodeo, versi awal untuk dilihat tim.
   - `video/`: potongan video tanpa suara dan tanpa teks tertanam (reel dari Teaser 2, kantor, lapangan, olahraga) plus posternya. `reel-tegak` adalah potongan tegak reel untuk HP.
   - `logo/`: logo SVG dari design system Zerodeo dan ikon dingin.
 - `cerita.html`, `css/cerita.css`, `js/cerita.js`: prototipe scrollytelling. Dibuka video reel penuh layar; saat di-scroll video mengecil jadi latar dan 6 botol naik. Tombol momen mengganti video latar. Pilih varian, botolnya ikut turun dan cerita tiap bab berganti sesuai varian. Terbit di `/cerita`, `noindex`, tidak ditautkan dari `index.html`. Link per varian (`/cerita?varian=vital-fresh`) melewati pembuka dan langsung ke ceritanya. Tanpa default: halaman berhenti di grid sampai pengunjung memilih (bab cerita disembunyikan); kalau terus mencoba scroll, muncul pesan dan botol bergoyang.
-- `img/urai/`: botol terurai per varian (tutup, pump/bola, selang, badan) untuk bab cara pakai, dipotong dari render terurai; `-utuh` untuk mode gerak dikurangi. Posisinya ada di `URAI` di `js/cerita.js`. Daily Active belum ada (render masih salah tulis), jadi memakai foto tutup terbuka.
+- `img/urai/`: botol terurai per varian (tutup, pump/bola, selang, badan) untuk bab cara pakai, dipotong dari render terurai; `-utuh` untuk mode gerak dikurangi. Posisinya ada di `URAI` di `js/cerita.js`. Keenam varian sudah ada.
 - `img/botol/`: botol tanpa latar (dipotong otomatis dari foto katalog, sementara sampai ada file transparan asli): `tutup` dan `buka`, tinggi 1000 dan 500 px.
 - `PROMPT.md`: prompt yang dipakai untuk membangun situs ini.
 - `KONTEN.md`: semua teks dan aturan klaim, diambil dari "Zerodeo Product Knowledge". Teks varian di `js/main.js` disalin dari sini.
